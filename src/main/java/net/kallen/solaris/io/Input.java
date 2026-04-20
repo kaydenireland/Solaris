@@ -10,6 +10,8 @@ public class Input {
     private static boolean[] lastButtons = new boolean[GLFW.GLFW_MOUSE_BUTTON_LAST];
     private static double mouseX, mouseY;
     private static double scrollX, scrollY;
+    private static double lastMouseX, lastMouseY;
+    private static double mouseDeltaX, mouseDeltaY;
 
     private GLFWKeyCallback keyboard;
     private GLFWCursorPosCallback mouseMove;
@@ -19,7 +21,9 @@ public class Input {
     public Input() {
         keyboard = new GLFWKeyCallback() {
             public void invoke(long window, int key, int scancode, int action, int mods) {
-                keys[key] = (action != GLFW.GLFW_RELEASE);
+                if (key >= 0 && key < keys.length) {
+                    keys[key] = (action != GLFW.GLFW_RELEASE);
+                }
             }
         };
 
@@ -50,12 +54,24 @@ public class Input {
 
         scrollX = 0;
         scrollY = 0;
+
+        mouseDeltaX = mouseX - lastMouseX;
+        mouseDeltaY = mouseY - lastMouseY;
+        lastMouseX = mouseX;
+        lastMouseY = mouseY;
     }
 
     // Keys
 
     public static boolean isKeyDown(int key) {
         return keys[key];
+    }
+
+    public static boolean isAnyKeyDown() {
+        for (boolean key : keys) {
+            if (key) return true;
+        }
+        return false;
     }
 
     public static boolean isKeyPressed(int key) {
@@ -70,6 +86,13 @@ public class Input {
 
     public static boolean isButtonDown(int button) {
         return buttons[button];
+    }
+
+    public static boolean isAnyButtonDown() {
+        for (boolean button : buttons) {
+            if (button) return true;
+        }
+        return false;
     }
 
     public static boolean isButtonPressed(int button) {
@@ -96,6 +119,18 @@ public class Input {
 
     public static double getScrollY() {
         return scrollY;
+    }
+
+    public static double getMouseDeltaX() {
+        return mouseDeltaX;
+    }
+
+    public static double getMouseDeltaY() {
+        return mouseDeltaY;
+    }
+
+    public static void lockCursor(long window, boolean locked) {
+        GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, locked ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
     }
 
     // Callbacks
