@@ -3,6 +3,9 @@ package main.java.net.kallen.solaris.math;
 public class Vector2 {
     private float x, y;
 
+    public final static Vector2 ZERO = new Vector2(0, 0);
+
+
     public Vector2(float x, float y) {
         this.x = x;
         this.y = y;

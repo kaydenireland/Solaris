@@ -1,5 +1,6 @@
 package main.java.net.kallen.solaris.io;
 
+import main.java.net.kallen.solaris.math.Matrix4;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
@@ -21,6 +22,7 @@ public class Window {
     private static long time;
 
     private GLFWWindowSizeCallback sizeCallback;
+    private Matrix4 projectionMatrix;
 
     public Window(int width, int height, String title) {
         this.width = width;
@@ -54,6 +56,7 @@ public class Window {
         GLFW.glfwMakeContextCurrent(window);
 
         GL.createCapabilities();
+        updateProjectionMatrix();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
 
         createCallbacks();
@@ -69,6 +72,7 @@ public class Window {
                 width = w;
                 height = h;
                 resized = true;
+                updateProjectionMatrix();
             }
         };
 
@@ -148,6 +152,14 @@ public class Window {
 
     public void setBgColor(float r, float g, float b, float a) {
         GL11.glClearColor(r, g, b, a);
+    }
+
+    public void updateProjectionMatrix() {
+        projectionMatrix = Matrix4.projection(70f, (float) width / height, 0.1f, 1000f);
+    }
+
+    public Matrix4 getProjectionMatrix() {
+        return projectionMatrix;
     }
 
 }

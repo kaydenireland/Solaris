@@ -21,14 +21,14 @@ public class GameLoop implements Runnable {
             this.init();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.toString(), "Failed to Start Kosmos", 0);
+            return;
         }
 
         while (!window.shouldClose() && !Input.isKeyDown(Key.ESCAPE)) {
+            window.update();
 
             update();
-            window.swapBuffers();
             render();
-            window.update();
 
         }
         close();
@@ -38,8 +38,10 @@ public class GameLoop implements Runnable {
     private void init() {
         window.create();
         window.setBgColor(0.1f, 0.3f, 0.2f, 0.5f);
+        create();
     }
 
+    public void create() { }
     public void render() { }
     public void update() { }
     public void close() { }

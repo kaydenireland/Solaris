@@ -80,12 +80,13 @@ public class Matrix4 {
     public static Matrix4 multiply(Matrix4 matrix, Matrix4 other) {
         Matrix4 result = Matrix4.identity();
 
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                result.set(i, j, matrix.get(i, 0) * other.get(0, j) +
-                        matrix.get(i, 1) * other.get(1, j) +
-                        matrix.get(i, 2) * other.get(2, j) +
-                        matrix.get(i, 3) * other.get(3, j));
+        for (int col = 0; col < SIZE; col++) {
+            for (int row = 0; row < SIZE; row++) {
+                float sum = 0;
+                for (int k = 0; k < SIZE; k++) {
+                    sum += matrix.get(k, row) * other.get(col, k);
+                }
+                result.set(col, row, sum);
             }
         }
 
@@ -101,9 +102,9 @@ public class Matrix4 {
         result.set(0, 0, 1.0f / (aspect * tanFOV));
         result.set(1, 1, 1.0f / tanFOV);
         result.set(2, 2, -((far + near) / range));
-        result.set(2, 3, -1.0f);
-        result.set(3, 2, -((2 * far * near) / range));
+        result.set(3, 2, -1.0f);
         result.set(3, 3, 0.0f);
+        result.set(2, 3, -((2 * far * near) / range));
 
         return result;
     }

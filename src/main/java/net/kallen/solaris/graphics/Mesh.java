@@ -1,5 +1,6 @@
 package main.java.net.kallen.solaris.graphics;
 
+import main.java.net.kallen.solaris.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -14,10 +15,18 @@ public class Mesh {
     private Vertex[] vertices;
     private int[] indices;
     private int vao, vbo, ibo, tbo;
+    private Texture texture;
 
     public Mesh(Vertex[] vertices, int[] indices) {
         this.vertices = vertices;
         this.indices = indices;
+        this.texture = new Texture(ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.TEXTURES, "default").toImagePath());
+    }
+
+    public Mesh(Vertex[] vertices, int[] indices, Texture texture) {
+        this.vertices = vertices;
+        this.indices = indices;
+        this.texture = texture;
     }
 
     public void create() {
@@ -55,6 +64,8 @@ public class Mesh {
         MemoryUtil.memFree(indicesBuffer);
 
         GL30.glBindVertexArray(0); // Unbind VAO
+
+        texture.create();
     }
 
     private int storeData(FloatBuffer buffer, int index, int size) {
@@ -73,7 +84,7 @@ public class Mesh {
         GL15.glDeleteBuffers(tbo);
 
         GL30.glDeleteVertexArrays(vao);
-
+        texture.destroy();
     }
 
     public Vertex[] getVertices() {
@@ -99,6 +110,10 @@ public class Mesh {
 
     public int getIBO() {
         return ibo;
+    }
+
+    public Texture getTexture() {
+        return texture;
     }
 
 }

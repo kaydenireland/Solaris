@@ -30,3 +30,5 @@ bin/
 
 ### IntelliJ ###
 .idea
+/.idea/
+.iml

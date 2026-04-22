@@ -7,8 +7,11 @@ public class ResourceLocation {
     private final String namespace;
     private final String path;
 
+    public static final String DEFAULT_NAMESPACE = "solaris";
+
     public static final String ICONS = "icons";
     public static final String SHADERS = "shaders";
+    public static final String TEXTURES = "textures";
 
     private ResourceLocation(String namespace, String path) {
         this.namespace = namespace.toLowerCase();
@@ -89,7 +92,7 @@ public class ResourceLocation {
         if (parts.length == 2) {
             return new ResourceLocation(parts[0], parts[1]);
         } else {
-            return fromNamespace(null, parts[0]);
+            return fromNamespace(DEFAULT_NAMESPACE, parts[0]);
         }
     }
 
