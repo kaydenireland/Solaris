@@ -3,9 +3,7 @@ package main.java.net.kallen.test;
 import main.java.net.kallen.solaris.graphics.*;
 import main.java.net.kallen.solaris.io.GameLoop;
 import main.java.net.kallen.solaris.io.Window;
-import main.java.net.kallen.solaris.math.Vector2;
-import main.java.net.kallen.solaris.math.Vector3;
-import main.java.net.kallen.solaris.util.ResourceLocation;
+import main.java.net.kallen.solaris.util.file.ResourceLocation;
 
 public class Test {
 

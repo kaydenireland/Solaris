@@ -1,9 +1,9 @@
 package main.java.net.kallen.solaris.graphics;
 
-import main.java.net.kallen.solaris.math.Matrix4;
-import main.java.net.kallen.solaris.math.Vector2;
-import main.java.net.kallen.solaris.math.Vector3;
-import main.java.net.kallen.solaris.util.FileLoader;
+import main.java.net.kallen.solaris.math.vector.Matrix4;
+import main.java.net.kallen.solaris.math.vector.Vector2;
+import main.java.net.kallen.solaris.math.vector.Vector3;
+import main.java.net.kallen.solaris.util.file.FileLoader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryUtil;
@@ -87,11 +87,11 @@ public class Shader {
     }
 
     public void setUniform(String name, Vector2 value) {
-        GL20.glUniform2f(getUniformLocation(name), value.getX(), value.getY());
+        GL20.glUniform2f(getUniformLocation(name), value.x, value.y);
     }
 
     public void setUniform(String name, Vector3 value) {
-        GL20.glUniform3f(getUniformLocation(name), value.getX(), value.getY(), value.getZ());
+        GL20.glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
     }
 
     public void setUniform(String name, Matrix4 value) {

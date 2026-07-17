@@ -1,6 +1,4 @@
-package main.java.net.kallen.solaris.math;
-
-import main.java.net.kallen.solaris.math.Vector3;
+package main.java.net.kallen.solaris.math.vector;
 
 import java.util.Arrays;
 
@@ -24,9 +22,9 @@ public class Matrix4 {
     public static Matrix4 translate(Vector3 translate) {
         Matrix4 result = Matrix4.identity();
 
-        result.set(0, 3, translate.getX());
-        result.set(1, 3, translate.getY());
-        result.set(2, 3, translate.getZ());
+        result.set(0, 3, translate.x);
+        result.set(1, 3, translate.y);
+        result.set(2, 3, translate.z);
 
         return result;
     }
@@ -38,15 +36,15 @@ public class Matrix4 {
         float sin = (float) Math.sin(Math.toRadians(angle));
         float C = 1 - cos;
 
-        result.set(0, 0, cos + axis.getX() * axis.getX() * C);
-        result.set(0, 1, axis.getX() * axis.getY() * C - axis.getZ() * sin);
-        result.set(0, 2, axis.getX() * axis.getZ() * C + axis.getY() * sin);
-        result.set(1, 0, axis.getY() * axis.getX() * C + axis.getZ() * sin);
-        result.set(1, 1, cos + axis.getY() * axis.getY() * C);
-        result.set(1, 2, axis.getY() * axis.getZ() * C - axis.getX() * sin);
-        result.set(2, 0, axis.getZ() * axis.getX() * C - axis.getY() * sin);
-        result.set(2, 1, axis.getZ() * axis.getY() * C + axis.getX() * sin);
-        result.set(2, 2, cos + axis.getZ() * axis.getZ() * C);
+        result.set(0, 0, cos + axis.x * axis.x * C);
+        result.set(0, 1, axis.x * axis.y * C - axis.z * sin);
+        result.set(0, 2, axis.x * axis.z * C + axis.y * sin);
+        result.set(1, 0, axis.y * axis.x * C + axis.z * sin);
+        result.set(1, 1, cos + axis.y * axis.y * C);
+        result.set(1, 2, axis.y * axis.z * C - axis.x * sin);
+        result.set(2, 0, axis.z * axis.x * C - axis.y * sin);
+        result.set(2, 1, axis.z * axis.y * C + axis.x * sin);
+        result.set(2, 2, cos + axis.z * axis.z * C);
 
         return result;
     }
@@ -54,9 +52,9 @@ public class Matrix4 {
     public static Matrix4 scale(Vector3 scalar) {
         Matrix4 result = Matrix4.identity();
 
-        result.set(0, 0, scalar.getX());
-        result.set(1, 1, scalar.getY());
-        result.set(2, 2, scalar.getZ());
+        result.set(0, 0, scalar.x);
+        result.set(1, 1, scalar.y);
+        result.set(2, 2, scalar.z);
 
         return result;
     }
@@ -65,9 +63,9 @@ public class Matrix4 {
         Matrix4 result;
 
         Matrix4 translationMatrix = Matrix4.translate(position);
-        Matrix4 rotXMatrix = Matrix4.rotate(rotation.getX(), new Vector3(1, 0, 0));
-        Matrix4 rotYMatrix = Matrix4.rotate(rotation.getY(), new Vector3(0, 1, 0));
-        Matrix4 rotZMatrix = Matrix4.rotate(rotation.getZ(), new Vector3(0, 0, 1));
+        Matrix4 rotXMatrix = Matrix4.rotate(rotation.x, new Vector3(1, 0, 0));
+        Matrix4 rotYMatrix = Matrix4.rotate(rotation.y, new Vector3(0, 1, 0));
+        Matrix4 rotZMatrix = Matrix4.rotate(rotation.z, new Vector3(0, 0, 1));
         Matrix4 scaleMatrix = Matrix4.scale(scale);
 
         Matrix4 rotationMatrix = Matrix4.multiply(rotYMatrix, Matrix4.multiply(rotXMatrix, rotZMatrix));
@@ -112,10 +110,10 @@ public class Matrix4 {
     public static Matrix4 view(Vector3 position, Vector3 rotation) {
         Matrix4 result;
 
-        Matrix4 translationMatrix = Matrix4.translate(Vector3.negate(position));
-        Matrix4 rotXMatrix = Matrix4.rotate(rotation.getX(), new Vector3(1, 0, 0));
-        Matrix4 rotYMatrix = Matrix4.rotate(rotation.getY(), new Vector3(0, 1, 0));
-        Matrix4 rotZMatrix = Matrix4.rotate(rotation.getZ(), new Vector3(0, 0, 1));
+        Matrix4 translationMatrix = Matrix4.translate(position.negate());
+        Matrix4 rotXMatrix = Matrix4.rotate(rotation.x, new Vector3(1, 0, 0));
+        Matrix4 rotYMatrix = Matrix4.rotate(rotation.y, new Vector3(0, 1, 0));
+        Matrix4 rotZMatrix = Matrix4.rotate(rotation.z, new Vector3(0, 0, 1));
 
         Matrix4 rotationMatrix = Matrix4.multiply(rotZMatrix, Matrix4.multiply(rotYMatrix, rotXMatrix));
 

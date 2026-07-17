@@ -1,8 +1,8 @@
 package main.java.net.kallen.solaris.graphics;
 
 
-import main.java.net.kallen.solaris.math.Vector2;
-import main.java.net.kallen.solaris.math.Vector3;
+import main.java.net.kallen.solaris.math.vector.Vector2;
+import main.java.net.kallen.solaris.math.vector.Vector3;
 
 
 public class Vertex {

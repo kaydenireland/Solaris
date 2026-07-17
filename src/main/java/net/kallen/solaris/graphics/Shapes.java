@@ -1,7 +1,6 @@
 package main.java.net.kallen.solaris.graphics;
 
-import main.java.net.kallen.solaris.math.Vector2;
-import main.java.net.kallen.solaris.math.Vector3;
+import main.java.net.kallen.solaris.math.vector.Vector3;
 
 public class Shapes {
 
@@ -29,9 +28,9 @@ public class Shapes {
             Vector3 pos = original[i].getPosition();
             shifted[i] = new Vertex(
                     new Vector3(
-                            pos.getX() + offset.getX(),
-                            pos.getY() + offset.getY(),
-                            pos.getZ() + offset.getZ()
+                            pos.x + offset.x,
+                            pos.y + offset.y,
+                            pos.z + offset.z
                     ),
                     original[i].getTexturePos()
             );
@@ -64,9 +63,9 @@ public class Shapes {
             Vector3 pos = original[i].getPosition();
             scaled[i] = new Vertex(
                     new Vector3(
-                            pos.getX() * scalar.getX(),
-                            pos.getY() * scalar.getY(),
-                            pos.getZ() * scalar.getZ()
+                            pos.x * scalar.x,
+                            pos.y * scalar.y,
+                            pos.z * scalar.z
                     ),
                     original[i].getTexturePos()
             );

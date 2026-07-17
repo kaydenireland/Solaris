@@ -1,6 +1,6 @@
 package main.java.net.kallen.solaris.graphics;
 
-import main.java.net.kallen.solaris.util.ResourceLocation;
+import main.java.net.kallen.solaris.util.file.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -37,9 +37,9 @@ public class Mesh {
         FloatBuffer positionBuffer = MemoryUtil.memAllocFloat(vertices.length * 3);
         float[] positionData = new float[vertices.length * 3];
         for (int i = 0; i < vertices.length; i++) {
-            positionData[i * 3] = vertices[i].getPosition().getX();
-            positionData[i * 3 + 1] = vertices[i].getPosition().getY();
-            positionData[i * 3 + 2] = vertices[i].getPosition().getZ();
+            positionData[i * 3] = vertices[i].getPosition().x;
+            positionData[i * 3 + 1] = vertices[i].getPosition().y;
+            positionData[i * 3 + 2] = vertices[i].getPosition().z;
         }
         positionBuffer.put(positionData).flip();
         vbo = storeData(positionBuffer, 0, 3);
@@ -48,8 +48,8 @@ public class Mesh {
         FloatBuffer textureBuffer = MemoryUtil.memAllocFloat(vertices.length * 2);
         float[] textureData = new float[vertices.length * 2];
         for (int i = 0; i < vertices.length; i++) {
-            textureData[i * 2] = vertices[i].getTexturePos().getX();
-            textureData[i * 2 + 1] = vertices[i].getTexturePos().getY();
+            textureData[i * 2] = vertices[i].getTexturePos().x;
+            textureData[i * 2 + 1] = vertices[i].getTexturePos().y;
         }
         textureBuffer.put(textureData).flip();
         tbo = storeData(textureBuffer, 2, 2);

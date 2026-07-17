@@ -1,6 +1,6 @@
 package main.java.net.kallen.solaris.io;
 
-import main.java.net.kallen.solaris.math.Matrix4;
+import main.java.net.kallen.solaris.math.vector.Matrix4;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;

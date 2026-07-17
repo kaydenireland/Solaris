@@ -1,6 +1,6 @@
 package main.java.net.kallen.solaris.graphics;
 
-import main.java.net.kallen.solaris.util.ImageLoader;
+import main.java.net.kallen.solaris.util.file.ImageLoader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;

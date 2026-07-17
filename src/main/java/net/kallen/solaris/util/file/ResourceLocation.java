@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.util;
+package main.java.net.kallen.solaris.util.file;
 
 import java.util.Objects;
 
