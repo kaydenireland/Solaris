@@ -76,6 +76,11 @@ public class Vector4 implements VectorLike<Vector4> {
         return (float) Math.sqrt(dx*dx + dy*dy + dz*dz + dw*dw);
     }
 
+    public float distanceSquared(Vector4 other) {
+        float dx = this.x - other.x, dy = this.y - other.y, dz = this.z - other.z, dw = this.w - other.w;
+        return (dx*dx + dy*dy + dz*dz + dw*dw);
+    }
+
     public Vector4 center(Vector4 other) {
         return new Vector4((x+other.x)/2, (y+other.y)/2, (z+other.z)/2, (w+other.w)/2);
     }

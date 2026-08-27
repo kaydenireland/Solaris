@@ -1,11 +1,11 @@
-package main.java.net.kallen.test;
+package test.java.net.kallen.solaris.example;
 
 import main.java.net.kallen.solaris.math.curve.BezierCurve;
 import main.java.net.kallen.solaris.math.vector.Vector2;
 import main.java.net.kallen.solaris.math.vector.Vector3;
 import java.util.List;
 
-public class BezierTest {
+public class BezierExample {
     public static void main(String[] args) {
         // 2D cubic curve
         List<Vector2> points2D = List.of(

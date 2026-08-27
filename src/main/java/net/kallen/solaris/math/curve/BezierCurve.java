@@ -1,7 +1,6 @@
 package main.java.net.kallen.solaris.math.curve;
 
 import main.java.net.kallen.solaris.math.Binomial;
-import main.java.net.kallen.solaris.math.vector.Vector2;
 import main.java.net.kallen.solaris.math.vector.VectorLike;
 import main.java.net.kallen.solaris.util.exception.InvalidListSizeException;
 

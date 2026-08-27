@@ -110,12 +110,28 @@ public class Vector3 implements VectorLike<Vector3> {
         return (float) Math.sqrt(x*x + y*y + z*z);
     }
 
+    public float distanceSquared(Vector3 other) {
+        float x = this.x - other.x;
+        float y = this.y - other.y;
+        float z = this.z - other.z;
+
+        return (x*x + y*y + z*z);
+    }
+
     public static float distance(Vector3 vec1, Vector3 vec2) {
         float x = vec1.x - vec2.x;
         float y = vec1.y - vec2.y;
         float z = vec1.z - vec2.z;
 
         return (float) Math.sqrt(x*x + y*y + z*z);
+    }
+
+    public static float distanceSquared(Vector3 vec1, Vector3 vec2) {
+        float x = vec1.x - vec2.x;
+        float y = vec1.y - vec2.y;
+        float z = vec1.z - vec2.z;
+
+        return (x*x + y*y + z*z);
     }
 
     public Vector3 center(Vector3 other) {

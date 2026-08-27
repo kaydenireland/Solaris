@@ -1,4 +1,4 @@
-package main.java.net.kallen.test;
+package test.java.net.kallen.solaris.example;
 
 import main.java.net.kallen.solaris.io.GameLoop;
 import main.java.net.kallen.solaris.io.Window;
@@ -8,7 +8,7 @@ import main.java.net.kallen.solaris.io.Window;
  * <p>
  *  Creates the GameLoop, which controls the update, render, and close functions.
  */
-public class FirstStep {
+public class FirstStepExample {
 
     public static void main(String[] args) {
         Window win = new Window(1280, 780, "Solaris Test");

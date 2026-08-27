@@ -1,11 +1,11 @@
-package main.java.net.kallen.test;
+package test.java.net.kallen.solaris.example;
 
 import main.java.net.kallen.solaris.graphics.*;
 import main.java.net.kallen.solaris.io.GameLoop;
 import main.java.net.kallen.solaris.io.Window;
 import main.java.net.kallen.solaris.util.file.ResourceLocation;
 
-public class Test {
+public class SquareExample {
 
     public static void main(String[] args) {
         Window window = new Window(1280, 780, "Solaris Test");
@@ -16,8 +16,8 @@ public class Test {
         Renderer renderer = new Renderer(window, shader);
         Texture texture = new Texture(ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.TEXTURES, "default").toImagePath());
 
-        Mesh mesh = new Mesh(Positions.TRIANGLE, Faces.TRIANGLE, texture);
-        // Mesh mesh = Shapes.TRIANGLE;
+        // Mesh mesh = new Mesh(Positions.SQUARE, Faces.RECTANGLE, texture);
+        Mesh mesh = Shapes.SQUARE;
         new GameLoop(window){
 
             @Override
