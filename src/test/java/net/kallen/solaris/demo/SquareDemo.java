@@ -1,11 +1,11 @@
-package test.java.net.kallen.solaris.example;
+package test.java.net.kallen.solaris.demo;
 
 import main.java.net.kallen.solaris.graphics.*;
 import main.java.net.kallen.solaris.io.GameLoop;
 import main.java.net.kallen.solaris.io.Window;
 import main.java.net.kallen.solaris.util.file.ResourceLocation;
 
-public class SquareExample {
+public class SquareDemo {
 
     public static void main(String[] args) {
         Window window = new Window(1280, 780, "Solaris Test");
