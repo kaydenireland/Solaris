@@ -9,7 +9,8 @@ import test.java.net.kallen.solaris.test.data.*;
 @Suite.SuiteClasses({
         AABB2Test.class,
         AABB3Test.class,
-        QuadTreeTest.class
+        QuadTreeTest.class,
+        OctreeTest.class
 })
 public class TestRunner {
 }

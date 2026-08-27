@@ -181,11 +181,9 @@ public class QuadTree {
 
         for (QuadTree child : children) {
 
-            Vector2 closestPoint =
-                    child.bounds.getClosestPoint(point);
+            Vector2 closestPoint = child.bounds.getClosestPoint(point);
 
-            float distanceSquared =
-                    closestPoint.distanceSquared(point);
+            float distanceSquared = closestPoint.distanceSquared(point);
 
             orderedChildren.add(
                     new ChildDistance(child, distanceSquared)
