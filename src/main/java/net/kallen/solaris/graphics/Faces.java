@@ -1,6 +1,6 @@
 package main.java.net.kallen.solaris.graphics;
 
-public class Faces {
+public final class Faces {
 
     public static int[] TRIANGLE = {
             0, 1, 2

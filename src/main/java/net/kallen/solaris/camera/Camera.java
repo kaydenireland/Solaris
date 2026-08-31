@@ -12,6 +12,7 @@ public class Camera {
     }
 
     public void update() {
+
     }
 
     public Vector3 getPosition() {

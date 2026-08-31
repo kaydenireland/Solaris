@@ -20,11 +20,18 @@ public class GameLoop implements Runnable {
         try{
             this.init();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.toString(), "Failed to Start Kosmos", 0);
+            JOptionPane.showMessageDialog(null, e.toString(), "Failed to Start", 0);
             return;
         }
 
+        long lastTime = System.nanoTime();
+
         while (!window.shouldClose() && !Input.isKeyDown(Key.ESCAPE)) {
+            long currentTime = System.nanoTime();
+            float dt = (currentTime - lastTime) / 1_000_000_000.0f;
+            lastTime = currentTime;
+            Time.update(dt);
+
             window.update();
 
             update();

@@ -36,12 +36,4 @@ public class FirstStepDemo {
 
         }.start();
     }
-
-    private void update() {
-
-    }
-
-    private void render() {
-
-    }
 }

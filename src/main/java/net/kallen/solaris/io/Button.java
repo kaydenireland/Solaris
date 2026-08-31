@@ -1,6 +1,6 @@
 package main.java.net.kallen.solaris.io;
 
-public class Button {
+public final class Button {
 
     // Mouse
     public static final int

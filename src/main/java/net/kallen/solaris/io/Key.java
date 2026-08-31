@@ -1,6 +1,6 @@
 package main.java.net.kallen.solaris.io;
 
-public class Key {
+public final class Key {
 
     // Letters
     public static final int

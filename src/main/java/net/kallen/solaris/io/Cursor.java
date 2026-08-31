@@ -1,6 +1,6 @@
 package main.java.net.kallen.solaris.io;
 
-public class Cursor {
+public final class Cursor {
 
     public static final int
             NORMAL   = 0x34001,

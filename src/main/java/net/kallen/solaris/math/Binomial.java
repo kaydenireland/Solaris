@@ -1,6 +1,6 @@
 package main.java.net.kallen.solaris.math;
 
-public class Binomial {
+public final class Binomial {
     public static long compute(int n, int k) {
         if (k < 0 || k > n) return 0;
         if (k == 0 || k == n) return 1;

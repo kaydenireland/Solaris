@@ -1,5 +1,6 @@
 package main.java.net.kallen.solaris.graphics;
 
+import main.java.net.kallen.solaris.camera.Camera;
 import main.java.net.kallen.solaris.io.Window;
 import main.java.net.kallen.solaris.math.vector.Matrix4;
 import main.java.net.kallen.solaris.math.vector.Vector3;
@@ -10,11 +11,13 @@ import org.lwjgl.opengl.GL30;
 
 public class Renderer {
     private final Window window;
-    private final Shader shader;
+    private Shader shader;
+    private Camera camera;
 
-    public Renderer(Window window, Shader shader) {
+    public Renderer(Window window, Shader shader, Camera camera) {
         this.window = window;
         this.shader = shader;
+        this.camera = camera;
     }
 
     public void beginFrame() {
@@ -49,7 +52,7 @@ public class Renderer {
 
         // Object uniform
         shader.setUniform("model", Matrix4.translate(new Vector3(0, 0, -2)));
-        shader.setUniform("view", Matrix4.identity());
+        shader.setUniform("view", Matrix4.view(camera.getPosition(), camera.getRotation()));
 
         // Bind mesh
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, mesh.getIBO());

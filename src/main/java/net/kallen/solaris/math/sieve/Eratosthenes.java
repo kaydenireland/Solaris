@@ -2,7 +2,7 @@ package main.java.net.kallen.solaris.math.sieve;
 
 import java.util.Arrays;
 
-public class Eratosthenes {
+public final class Eratosthenes {
     public static int[] sieve(int n) {
         if (n <= 1) {
             System.out.println("Prime Numbers: []");

@@ -3,7 +3,7 @@ package main.java.net.kallen.solaris.graphics;
 import main.java.net.kallen.solaris.math.vector.Vector2;
 import main.java.net.kallen.solaris.math.vector.Vector3;
 
-public class Positions {
+public final class Positions {
 
     public static Vertex[] TRIANGLE = {
             new Vertex(new Vector3(0f,  0.5f, 0), new Vector2(0.5f, 1f)), // top
