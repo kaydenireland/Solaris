@@ -2,21 +2,21 @@ package main.java.net.kallen.solaris.io;
 
 import org.lwjgl.glfw.*;
 
-public class Input {
+public final class Input {
 
-    private static boolean[] keys = new boolean[GLFW.GLFW_KEY_LAST];
-    private static boolean[] lastKeys = new boolean[GLFW.GLFW_KEY_LAST];
-    private static boolean[] buttons = new boolean[GLFW.GLFW_MOUSE_BUTTON_LAST];
-    private static boolean[] lastButtons = new boolean[GLFW.GLFW_MOUSE_BUTTON_LAST];
-    private static double mouseX, mouseY;
+    private final static boolean[] keys = new boolean[GLFW.GLFW_KEY_LAST];
+    private final static boolean[] lastKeys = new boolean[GLFW.GLFW_KEY_LAST];
+    private final static boolean[] buttons = new boolean[GLFW.GLFW_MOUSE_BUTTON_LAST];
+    private final static boolean[] lastButtons = new boolean[GLFW.GLFW_MOUSE_BUTTON_LAST];
+    private static double currentMouseX, currentMouseY;
     private static double scrollX, scrollY;
     private static double lastMouseX, lastMouseY;
     private static double mouseDeltaX, mouseDeltaY;
 
-    private GLFWKeyCallback keyboard;
-    private GLFWCursorPosCallback mouseMove;
-    private GLFWMouseButtonCallback mouseButtons;
-    private GLFWScrollCallback mouseScroll;
+    private final GLFWKeyCallback keyboard;
+    private final GLFWCursorPosCallback mouseMove;
+    private final GLFWMouseButtonCallback mouseButtons;
+    private final GLFWScrollCallback mouseScroll;
 
     public Input() {
         keyboard = new GLFWKeyCallback() {
@@ -29,8 +29,8 @@ public class Input {
 
         mouseMove = new GLFWCursorPosCallback() {
             public void invoke(long window, double xpos, double ypos) {
-                mouseX = xpos;
-                mouseY = ypos;
+                currentMouseX = xpos;
+                currentMouseY = ypos;
             }
         };
 
@@ -55,10 +55,10 @@ public class Input {
         scrollX = 0;
         scrollY = 0;
 
-        mouseDeltaX = mouseX - lastMouseX;
-        mouseDeltaY = mouseY - lastMouseY;
-        lastMouseX = mouseX;
-        lastMouseY = mouseY;
+        mouseDeltaX = currentMouseX - lastMouseX;
+        mouseDeltaY = currentMouseY - lastMouseY;
+        lastMouseX = currentMouseX;
+        lastMouseY = currentMouseY;
     }
 
     // Keys
@@ -105,12 +105,12 @@ public class Input {
 
     // Mouse
 
-    public static double getMouseX() {
-        return mouseX;
+    public static double getCurrentMouseX() {
+        return currentMouseX;
     }
 
-    public static double getMouseY() {
-        return mouseY;
+    public static double getCurrentMouseY() {
+        return currentMouseY;
     }
 
     public static double getScrollX() {

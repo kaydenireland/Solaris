@@ -20,6 +20,7 @@ public class Window {
 
     private int frames;
     private static long time;
+    private boolean showFps = true;
 
     private GLFWWindowSizeCallback sizeCallback;
     private Matrix4 projectionMatrix;
@@ -94,7 +95,7 @@ public class Window {
 
         frames++;
         if (System.currentTimeMillis() > time + 1000) {
-            GLFW.glfwSetWindowTitle(window, title + " | FPS: " + frames);
+            if (showFps) GLFW.glfwSetWindowTitle(window, title + " | FPS: " + frames);
             time = System.currentTimeMillis();
             frames = 0;
         }
@@ -160,6 +161,18 @@ public class Window {
 
     public Matrix4 getProjectionMatrix() {
         return projectionMatrix;
+    }
+
+    public void shouldShowFps(boolean showFps) {
+        this.showFps = showFps;
+    }
+
+    public long getHandle() {
+        return window;
+    }
+
+    public void lockCursor(boolean locked) {
+        Input.lockCursor(window, locked);
     }
 
 }

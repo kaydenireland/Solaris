@@ -29,6 +29,7 @@ public class CubeDemo {
             public void create() {
                 shader.create();
                 mesh.create();
+                window.lockCursor(true);
             }
 
             @Override
@@ -39,7 +40,7 @@ public class CubeDemo {
             @Override
             public void render() {
                 renderer.beginFrame();
-                renderer.renderMesh(mesh, camera.getPosition());
+                renderer.renderMesh(mesh, new Vector3(0, 0, -2));
                 renderer.endFrame();
             }
 

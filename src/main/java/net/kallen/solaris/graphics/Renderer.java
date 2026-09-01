@@ -51,7 +51,7 @@ public class Renderer {
         GL30.glEnableVertexAttribArray(2);
 
         // Object uniform
-        shader.setUniform("model", Matrix4.translate(new Vector3(0, 0, -2)));
+        shader.setUniform("model", Matrix4.translate(position));
         shader.setUniform("view", Matrix4.view(camera.getPosition(), camera.getRotation()));
 
         // Bind mesh

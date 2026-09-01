@@ -4,7 +4,7 @@ public class Vector2 implements VectorLike<Vector2> {
     public float x, y;
 
     public final static Vector2 ZERO = new Vector2(0, 0);
-    public final static Vector2 ONE = new Vector2(0, 0);
+    public final static Vector2 ONE = new Vector2(1, 1);
     public final static Vector2 UNIT_X = new Vector2(1, 0);
     public final static Vector2 UNIT_Y = new Vector2(0, 1);
 
@@ -117,15 +117,15 @@ public class Vector2 implements VectorLike<Vector2> {
             y += vec.y;
         }
 
-        x /= vecs.length;
-        y /= vecs.length;
+        x /= vecs.length + 1;
+        y /= vecs.length + 1;
 
         return new Vector2(x, y);
     }
 
     public Vector2 lerp(Vector2 other, float t) {
         return new Vector2(
-                this.x + (other.x - this.x * t),
+                this.x + (other.x - this.x) * t,
                 this.y + (other.y - this.y) * t
         );
     }

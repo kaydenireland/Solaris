@@ -7,6 +7,10 @@ import test.java.net.kallen.solaris.test.data.*;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+        Vector2Test.class,
+        Vector3Test.class,
+        Vector4Test.class,
+        Matrix4Test.class,
         AABB2Test.class,
         AABB3Test.class,
         QuadTreeTest.class,

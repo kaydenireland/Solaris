@@ -4,6 +4,12 @@ public class Vector4 implements VectorLike<Vector4> {
     public float x, y, z, w;
 
     public final static Vector4 ZERO = new Vector4(0, 0, 0, 0);
+    public final static Vector4 ONE = new Vector4(1, 1, 1, 1);
+
+    public final static Vector4 UNIT_X = new Vector4(1, 0, 0, 0);
+    public final static Vector4 UNIT_Y = new Vector4(0, 1, 0, 0);
+    public final static Vector4 UNIT_Z = new Vector4(0, 0, 1, 0);
+    public final static Vector4 UNIT_W = new Vector4(0, 0, 0, 1);
 
     public Vector4(float x, float y, float z, float w) {
         this.x = x;
@@ -98,10 +104,10 @@ public class Vector4 implements VectorLike<Vector4> {
             w += vec.w;
         }
 
-        x /= vecs.length;
-        y /= vecs.length;
-        z /= vecs.length;
-        w /= vecs.length;
+        x /= vecs.length + 1;
+        y /= vecs.length + 1;
+        z /= vecs.length + 1;
+        w /= vecs.length + 1;
 
         return new Vector4(x, y, z, w);
     }

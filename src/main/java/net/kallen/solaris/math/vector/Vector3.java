@@ -161,9 +161,9 @@ public class Vector3 implements VectorLike<Vector3> {
             z += vec.z;
         }
 
-        x /= vecs.length;
-        y /= vecs.length;
-        z /= vecs.length;
+        x /= vecs.length + 1;
+        y /= vecs.length + 1;
+        z /= vecs.length + 1;
 
         return new Vector3(x, y, z);
     }
