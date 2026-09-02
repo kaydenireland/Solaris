@@ -1,9 +1,9 @@
-package main.java.net.kallen.solaris.camera;
+package net.kallen.solaris.camera;
 
-import main.java.net.kallen.solaris.io.Input;
-import main.java.net.kallen.solaris.io.Key;
-import main.java.net.kallen.solaris.io.Time;
-import main.java.net.kallen.solaris.math.vector.Vector3;
+import net.kallen.solaris.io.Input;
+import net.kallen.solaris.io.Key;
+import net.kallen.solaris.io.Time;
+import net.kallen.solaris.math.vector.Vector3;
 
 public class FreeCamera extends Camera {
 

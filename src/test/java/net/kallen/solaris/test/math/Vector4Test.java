@@ -1,7 +1,7 @@
-package test.java.net.kallen.solaris.test.math;
+package net.kallen.solaris.test.math;
 
-import main.java.net.kallen.solaris.math.vector.Vector3;
-import main.java.net.kallen.solaris.math.vector.Vector4;
+import net.kallen.solaris.math.vector.Vector3;
+import net.kallen.solaris.math.vector.Vector4;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

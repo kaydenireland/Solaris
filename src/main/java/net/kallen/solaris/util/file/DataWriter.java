@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.util.file;
+package net.kallen.solaris.util.file;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

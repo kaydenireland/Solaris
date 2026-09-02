@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.util.file;
+package net.kallen.solaris.util.file;
 
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryUtil;

@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.data;
+package net.kallen.solaris.data;
 
 import java.util.ArrayList;
 import java.util.Collections;

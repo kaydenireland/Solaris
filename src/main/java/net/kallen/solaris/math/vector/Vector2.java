@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.math.vector;
+package net.kallen.solaris.math.vector;
 
 public class Vector2 implements VectorLike<Vector2> {
     public float x, y;

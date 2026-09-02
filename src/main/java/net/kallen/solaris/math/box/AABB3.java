@@ -1,6 +1,6 @@
-package main.java.net.kallen.solaris.math.box;
+package net.kallen.solaris.math.box;
 
-import main.java.net.kallen.solaris.math.vector.Vector3;
+import net.kallen.solaris.math.vector.Vector3;
 
 public class AABB3 {
     public Vector3 min;

@@ -1,8 +1,8 @@
-package main.java.net.kallen.solaris.math.curve;
+package net.kallen.solaris.math.curve;
 
-import main.java.net.kallen.solaris.math.Binomial;
-import main.java.net.kallen.solaris.math.vector.VectorLike;
-import main.java.net.kallen.solaris.util.exception.InvalidListSizeException;
+import net.kallen.solaris.math.Binomial;
+import net.kallen.solaris.math.vector.VectorLike;
+import net.kallen.solaris.util.exception.InvalidListSizeException;
 
 import java.util.List;
 

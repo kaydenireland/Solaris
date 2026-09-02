@@ -1,7 +1,7 @@
-package main.java.net.kallen.solaris.data;
+package net.kallen.solaris.data;
 
-import main.java.net.kallen.solaris.math.box.AABB3;
-import main.java.net.kallen.solaris.math.vector.Vector3;
+import net.kallen.solaris.math.box.AABB3;
+import net.kallen.solaris.math.vector.Vector3;
 
 import java.util.ArrayList;
 import java.util.Comparator;

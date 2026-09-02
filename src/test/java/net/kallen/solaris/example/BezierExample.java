@@ -1,8 +1,8 @@
-package test.java.net.kallen.solaris.example;
+package net.kallen.solaris.example;
 
-import main.java.net.kallen.solaris.math.curve.BezierCurve;
-import main.java.net.kallen.solaris.math.vector.Vector2;
-import main.java.net.kallen.solaris.math.vector.Vector3;
+import net.kallen.solaris.math.curve.BezierCurve;
+import net.kallen.solaris.math.vector.Vector2;
+import net.kallen.solaris.math.vector.Vector3;
 import java.util.List;
 
 public class BezierExample {

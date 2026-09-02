@@ -1,13 +1,12 @@
-package test.java.net.kallen.solaris.demo;
+package net.kallen.solaris.demo;
 
-import main.java.net.kallen.solaris.camera.Camera;
-import main.java.net.kallen.solaris.camera.FreeCamera;
-import main.java.net.kallen.solaris.graphics.*;
-import main.java.net.kallen.solaris.io.GameLoop;
-import main.java.net.kallen.solaris.io.Key;
-import main.java.net.kallen.solaris.io.Window;
-import main.java.net.kallen.solaris.math.vector.Vector3;
-import main.java.net.kallen.solaris.util.file.ResourceLocation;
+import net.kallen.solaris.camera.Camera;
+import net.kallen.solaris.camera.FreeCamera;
+import net.kallen.solaris.graphics.*;
+import net.kallen.solaris.io.GameLoop;
+import net.kallen.solaris.io.Window;
+import net.kallen.solaris.math.vector.Vector3;
+import net.kallen.solaris.util.file.ResourceLocation;
 
 public class CubeDemo {
 
@@ -21,7 +20,7 @@ public class CubeDemo {
 
         Renderer renderer = new Renderer(window, shader, camera);
 
-        Mesh mesh = Shapes.torus(8, 5);
+        Mesh mesh = Shapes.CUBE;
 
         new GameLoop(window){
 

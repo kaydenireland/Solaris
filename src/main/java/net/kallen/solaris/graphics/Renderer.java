@@ -1,9 +1,9 @@
-package main.java.net.kallen.solaris.graphics;
+package net.kallen.solaris.graphics;
 
-import main.java.net.kallen.solaris.camera.Camera;
-import main.java.net.kallen.solaris.io.Window;
-import main.java.net.kallen.solaris.math.vector.Matrix4;
-import main.java.net.kallen.solaris.math.vector.Vector3;
+import net.kallen.solaris.camera.Camera;
+import net.kallen.solaris.io.Window;
+import net.kallen.solaris.math.vector.Matrix4;
+import net.kallen.solaris.math.vector.Vector3;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;

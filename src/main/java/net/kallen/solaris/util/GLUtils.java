@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.util;
+package net.kallen.solaris.util;
 
 import org.lwjgl.opengl.GL11;
 

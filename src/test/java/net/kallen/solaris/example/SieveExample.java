@@ -1,10 +1,10 @@
-package test.java.net.kallen.solaris.example;
+package net.kallen.solaris.example;
 
-import main.java.net.kallen.solaris.math.sieve.Eratosthenes;
+import net.kallen.solaris.math.sieve.Eratosthenes;
 
 import java.util.Arrays;
 
-public class SieveDemo {
+public class SieveExample {
     public static void main(String[] args) {
         System.out.println("Eratosthenes Sieve, n=50: " + Arrays.toString(Eratosthenes.sieve(50)));
     }

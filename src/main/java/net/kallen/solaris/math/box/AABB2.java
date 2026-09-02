@@ -1,6 +1,6 @@
-package main.java.net.kallen.solaris.math.box;
+package net.kallen.solaris.math.box;
 
-import main.java.net.kallen.solaris.math.vector.Vector2;
+import net.kallen.solaris.math.vector.Vector2;
 
 public class AABB2 {
 

@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.util.file;
+package net.kallen.solaris.util.file;
 
 import java.util.Objects;
 
@@ -53,15 +53,15 @@ public class ResourceLocation {
     }
 
     public String toFilePath() {
-        return "/main/resources/" + namespace + "/" + path;
+        return "/" + namespace + "/" + path;
     }
 
     public String toFilePath(String extension) {
-        return "/main/resources/" + namespace + "/" + path + extension;
+        return "/" + namespace + "/" + path + extension;
     }
 
     public String toImagePath() {
-        return "/main/resources/" + namespace + "/" + path + ".png";
+        return "/" + namespace + "/" + path + ".png";
     }
 
     @Override

@@ -1,9 +1,9 @@
-package test.java.net.kallen.solaris.test;
+package net.kallen.solaris.test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import test.java.net.kallen.solaris.test.math.*;
-import test.java.net.kallen.solaris.test.data.*;
+import net.kallen.solaris.test.math.*;
+import net.kallen.solaris.test.data.*;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

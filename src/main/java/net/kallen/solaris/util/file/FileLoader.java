@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.util.file;
+package net.kallen.solaris.util.file;
 
 import java.io.BufferedReader;
 import java.io.IOException;
