@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.util.exception;
+package net.kallen.solaris.util.exception;
 
 public class InvalidListSizeException extends RuntimeException {
     public InvalidListSizeException(String msg) {

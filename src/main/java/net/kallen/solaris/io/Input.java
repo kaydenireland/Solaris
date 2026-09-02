@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.io;
+package net.kallen.solaris.io;
 
 import org.lwjgl.glfw.*;
 

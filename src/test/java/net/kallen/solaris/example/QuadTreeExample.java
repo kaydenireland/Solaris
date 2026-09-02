@@ -1,8 +1,8 @@
-package test.java.net.kallen.solaris.example;
+package net.kallen.solaris.example;
 
-import main.java.net.kallen.solaris.data.QuadTree;
-import main.java.net.kallen.solaris.math.box.AABB2;
-import main.java.net.kallen.solaris.math.vector.Vector2;
+import net.kallen.solaris.data.QuadTree;
+import net.kallen.solaris.math.box.AABB2;
+import net.kallen.solaris.math.vector.Vector2;
 
 public class QuadTreeExample {
 

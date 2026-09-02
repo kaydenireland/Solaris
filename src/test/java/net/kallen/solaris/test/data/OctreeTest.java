@@ -1,8 +1,8 @@
-package test.java.net.kallen.solaris.test.data;
+package net.kallen.solaris.test.data;
 
-import main.java.net.kallen.solaris.data.Octree;
-import main.java.net.kallen.solaris.math.box.AABB3;
-import main.java.net.kallen.solaris.math.vector.Vector3;
+import net.kallen.solaris.data.Octree;
+import net.kallen.solaris.math.box.AABB3;
+import net.kallen.solaris.math.vector.Vector3;
 import org.junit.Test;
 
 import java.util.ArrayList;

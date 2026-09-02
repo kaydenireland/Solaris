@@ -1,14 +1,14 @@
-package test.java.net.kallen.solaris.test.math;
+package net.kallen.solaris.test.math;
 
-import main.java.net.kallen.solaris.math.box.AABB3;
-import main.java.net.kallen.solaris.math.vector.Vector3;
+import net.kallen.solaris.math.vector.Vector3;
+import net.kallen.solaris.math.box.AABB3;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class AABB3Test {
 
-    private final AABB3 box = new AABB3(
+    private final net.kallen.solaris.math.box.AABB3 box = new AABB3(
             new Vector3(10, 20, 30),
             new Vector3(40, 50, 60)
     );

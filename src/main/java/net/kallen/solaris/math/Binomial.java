@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.math;
+package net.kallen.solaris.math;
 
 public final class Binomial {
     public static long compute(int n, int k) {

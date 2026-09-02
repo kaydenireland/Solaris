@@ -1,6 +1,6 @@
-package main.java.net.kallen.solaris.graphics;
+package net.kallen.solaris.graphics;
 
-import main.java.net.kallen.solaris.util.file.ResourceLocation;
+import net.kallen.solaris.util.file.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;

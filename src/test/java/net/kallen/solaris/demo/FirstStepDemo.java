@@ -1,7 +1,7 @@
-package test.java.net.kallen.solaris.demo;
+package net.kallen.solaris.demo;
 
-import main.java.net.kallen.solaris.io.GameLoop;
-import main.java.net.kallen.solaris.io.Window;
+import net.kallen.solaris.io.GameLoop;
+import net.kallen.solaris.io.Window;
 
 /**
  *  Demonstrates the first step of using the Solaris Engine.

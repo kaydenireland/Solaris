@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.graphics;
+package net.kallen.solaris.graphics;
 
 public final class Faces {
 

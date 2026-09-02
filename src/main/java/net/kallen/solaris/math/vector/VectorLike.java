@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.math.vector;
+package net.kallen.solaris.math.vector;
 
 public interface VectorLike<V> {
     void set(V other);

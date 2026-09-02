@@ -1,6 +1,6 @@
-package main.java.net.kallen.solaris.camera;
+package net.kallen.solaris.camera;
 
-import main.java.net.kallen.solaris.math.vector.Vector3;
+import net.kallen.solaris.math.vector.Vector3;
 
 public class Camera {
     protected Vector3 position;

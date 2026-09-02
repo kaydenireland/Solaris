@@ -1,4 +1,4 @@
-package main.java.net.kallen.solaris.math.sieve;
+package net.kallen.solaris.math.sieve;
 
 import java.util.Arrays;
 
