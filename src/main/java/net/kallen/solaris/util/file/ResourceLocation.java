@@ -12,6 +12,9 @@ public class ResourceLocation {
     public static final String ICONS = "icons";
     public static final String SHADERS = "shaders";
     public static final String TEXTURES = "textures";
+    public static final String MODELS = "models";
+
+    public static final String DEFAULT_TEXTURE = ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.TEXTURES, "default").toImagePath();
 
     private ResourceLocation(String namespace, String path) {
         this.namespace = namespace.toLowerCase();
@@ -58,6 +61,10 @@ public class ResourceLocation {
 
     public String toFilePath(String extension) {
         return "/" + namespace + "/" + path + extension;
+    }
+
+    public String toSystemFilePath(String extension) {
+        return "src/main/resources/" + namespace + "/" + path + extension;
     }
 
     public String toImagePath() {

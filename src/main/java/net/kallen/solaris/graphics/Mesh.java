@@ -20,7 +20,7 @@ public class Mesh {
     public Mesh(Vertex[] vertices, int[] indices) {
         this.vertices = vertices;
         this.indices = indices;
-        this.texture = new Texture(ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.TEXTURES, "default").toImagePath());
+        this.texture = new Texture(ResourceLocation.DEFAULT_TEXTURE);
     }
 
     public Mesh(Vertex[] vertices, int[] indices, Texture texture) {
