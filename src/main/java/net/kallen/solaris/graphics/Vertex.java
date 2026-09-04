@@ -10,11 +10,6 @@ public class Vertex {
     private Vector3 normal;
     private Vector2 texturePos;
 
-    public Vertex(Vector3 position, Vector2 texturePos) {
-        this.position = position;
-        this.normal = new Vector3(0, 0, 1);
-        this.texturePos = texturePos;
-    }
     public Vertex(Vector3 position, Vector3 normal, Vector2 texturePos) {
         this.position = position;
         this.normal = normal;
