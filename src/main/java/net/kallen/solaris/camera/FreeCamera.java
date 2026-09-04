@@ -16,6 +16,10 @@ public class FreeCamera extends Camera {
     private boolean invertY = false;
     private boolean mouseEnabled = true;
 
+    public FreeCamera() {
+        super();
+    }
+
     public FreeCamera(Vector3 position, Vector3 rotation) {
         super(position, rotation);
     }

@@ -2,7 +2,10 @@ package net.kallen.solaris.demo;
 
 import net.kallen.solaris.camera.Camera;
 import net.kallen.solaris.camera.FreeCamera;
-import net.kallen.solaris.graphics.*;
+import net.kallen.solaris.graphics.mesh.Mesh;
+import net.kallen.solaris.graphics.mesh.Shapes;
+import net.kallen.solaris.graphics.render.Renderer;
+import net.kallen.solaris.graphics.shader.StaticShader;
 import net.kallen.solaris.io.GameLoop;
 import net.kallen.solaris.io.Window;
 import net.kallen.solaris.math.vector.Vector3;
@@ -12,7 +15,7 @@ public class CubeDemo {
 
     public static void main(String[] args) {
         Window window = new Window(1280, 780, "Solaris Test");
-        Shader shader = new Shader(
+        StaticShader shader = new StaticShader(
                 ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.SHADERS, "default").toFilePath(".vert"),
                 ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.SHADERS, "default").toFilePath(".frag")
         );

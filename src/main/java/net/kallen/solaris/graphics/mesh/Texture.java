@@ -1,4 +1,4 @@
-package net.kallen.solaris.graphics;
+package net.kallen.solaris.graphics.mesh;
 
 import net.kallen.solaris.util.file.ImageLoader;
 import org.lwjgl.opengl.GL11;

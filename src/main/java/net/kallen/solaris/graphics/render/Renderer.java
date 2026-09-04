@@ -1,6 +1,8 @@
-package net.kallen.solaris.graphics;
+package net.kallen.solaris.graphics.render;
 
 import net.kallen.solaris.camera.Camera;
+import net.kallen.solaris.graphics.mesh.Mesh;
+import net.kallen.solaris.graphics.shader.StaticShader;
 import net.kallen.solaris.io.Window;
 import net.kallen.solaris.math.vector.Matrix4;
 import net.kallen.solaris.math.vector.Vector3;
@@ -11,12 +13,12 @@ import org.lwjgl.opengl.GL30;
 
 public class Renderer {
     private final Window window;
-    private Shader shader;
+    private StaticShader staticShader;
     private Camera camera;
 
-    public Renderer(Window window, Shader shader, Camera camera) {
+    public Renderer(Window window, StaticShader shader, Camera camera) {
         this.window = window;
-        this.shader = shader;
+        this.staticShader = shader;
         this.camera = camera;
     }
 
@@ -34,12 +36,12 @@ public class Renderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        shader.bind();
-        shader.setUniform("projection", window.getProjectionMatrix());
+        staticShader.bind();
+        staticShader.loadProjectionMatrix(window.getProjectionMatrix());
     }
 
     public void endFrame() {
-        shader.unbind();
+        staticShader.unbind();
         window.swapBuffers();
     }
 
@@ -47,19 +49,19 @@ public class Renderer {
         GL30.glBindVertexArray(mesh.getVAO());
 
         GL30.glEnableVertexAttribArray(0);
-        // GL30.glEnableVertexAttribArray(1);
+        GL30.glEnableVertexAttribArray(1);
         GL30.glEnableVertexAttribArray(2);
 
         // Object uniform
-        shader.setUniform("model", Matrix4.translate(position));
-        shader.setUniform("view", Matrix4.view(camera.getPosition(), camera.getRotation()));
+        staticShader.loadModelMatrix(Matrix4.translate(position));
+        staticShader.loadViewMatrix(Matrix4.view(camera.getPosition(), camera.getRotation()));
 
         // Bind mesh
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, mesh.getIBO());
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, mesh.getTexture().getTextureID());
-        shader.setUniform("tex", 0);
+        staticShader.loadTexture(0);
 
         // Draw
         GL11.glDrawElements(
@@ -72,7 +74,7 @@ public class Renderer {
         // Unbind
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
         GL30.glDisableVertexAttribArray(0);
-        // GL30.glDisableVertexAttribArray(1);
+        GL30.glDisableVertexAttribArray(1);
         GL30.glDisableVertexAttribArray(2);
         GL30.glBindVertexArray(0);
     }

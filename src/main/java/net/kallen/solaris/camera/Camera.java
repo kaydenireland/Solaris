@@ -6,6 +6,11 @@ public class Camera {
     protected Vector3 position;
     protected Vector3 rotation;
 
+    public Camera() {
+        this.position = Vector3.ZERO;
+        this.rotation = Vector3.ZERO;
+    }
+
     public Camera(Vector3 position, Vector3 rotation) {
         this.position = position;
         this.rotation = rotation;

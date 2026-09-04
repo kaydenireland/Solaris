@@ -1,8 +1,8 @@
 package net.kallen.solaris.util.file;
 
-import net.kallen.solaris.graphics.Mesh;
-import net.kallen.solaris.graphics.Texture;
-import net.kallen.solaris.graphics.Vertex;
+import net.kallen.solaris.graphics.mesh.Mesh;
+import net.kallen.solaris.graphics.mesh.Texture;
+import net.kallen.solaris.graphics.mesh.Vertex;
 import net.kallen.solaris.math.vector.Vector2;
 import net.kallen.solaris.math.vector.Vector3;
 import org.lwjgl.assimp.*;
