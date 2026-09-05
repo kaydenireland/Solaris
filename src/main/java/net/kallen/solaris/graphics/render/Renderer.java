@@ -1,7 +1,10 @@
 package net.kallen.solaris.graphics.render;
 
-import net.kallen.solaris.camera.Camera;
+import net.kallen.solaris.graphics.camera.Camera;
 import net.kallen.solaris.graphics.mesh.Mesh;
+import net.kallen.solaris.graphics.scene.Entity;
+import net.kallen.solaris.graphics.scene.Light;
+import net.kallen.solaris.graphics.scene.Scene;
 import net.kallen.solaris.graphics.shader.StaticShader;
 import net.kallen.solaris.io.Window;
 import net.kallen.solaris.math.vector.Matrix4;
@@ -13,14 +16,16 @@ import org.lwjgl.opengl.GL30;
 
 public class Renderer {
     private final Window window;
-    private StaticShader staticShader;
-    private Camera camera;
+    private final StaticShader shader;
+    private final Camera camera;
 
     public Renderer(Window window, StaticShader shader, Camera camera) {
         this.window = window;
-        this.staticShader = shader;
+        this.shader = shader;
         this.camera = camera;
     }
+
+    // Render Setup
 
     public void beginFrame() {
 
@@ -36,28 +41,34 @@ public class Renderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        staticShader.bind();
-        staticShader.loadProjectionMatrix(window.getProjectionMatrix());
+        shader.bind();
+        shader.loadProjectionMatrix(window.getProjectionMatrix());
     }
 
     public void endFrame() {
-        staticShader.unbind();
+        shader.unbind();
         window.swapBuffers();
     }
 
+    // Render
+
     public void renderMesh(Mesh mesh, Vector3 position) {
+        renderMesh(mesh, Matrix4.translate(position));
+    }
+
+    public void renderMesh(Mesh mesh, Matrix4 model) {
         GL30.glBindVertexArray(mesh.getVAO());
 
         // Object uniform
-        staticShader.loadModelMatrix(Matrix4.translate(position));
-        staticShader.loadViewMatrix(Matrix4.view(camera.getPosition(), camera.getRotation()));
+        shader.loadModelMatrix(model);
+        shader.loadViewMatrix(Matrix4.view(camera.getPosition(), camera.getRotation()));
 
         // Bind mesh
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, mesh.getIBO());
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, mesh.getTexture().getTextureID());
-        staticShader.loadTexture(0);
+        shader.loadTexture(0);
 
         // Draw
         GL11.glDrawElements(
@@ -80,6 +91,17 @@ public class Renderer {
 
     public void renderMesh(Mesh mesh) {
         renderMesh(mesh, Vector3.ZERO);
+    }
+
+    public void renderEntity(Entity entity) {
+        renderMesh(entity.getMesh(), Matrix4.transform(entity.getPosition(), entity.getRotation(), entity.getScale()));
+    }
+
+
+    // Shader Settings
+
+    public void loadLight(Light light, float ambientStrength) {
+        shader.loadLight(light, ambientStrength);
     }
 
 }

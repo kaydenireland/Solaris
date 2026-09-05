@@ -1,4 +1,4 @@
-package net.kallen.solaris.camera;
+package net.kallen.solaris.graphics.camera;
 
 import net.kallen.solaris.io.Input;
 import net.kallen.solaris.io.Key;

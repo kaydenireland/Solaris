@@ -1,7 +1,7 @@
 package net.kallen.solaris.demo;
 
-import net.kallen.solaris.camera.Camera;
-import net.kallen.solaris.camera.FreeCamera;
+import net.kallen.solaris.graphics.camera.Camera;
+import net.kallen.solaris.graphics.camera.FreeCamera;
 import net.kallen.solaris.graphics.mesh.Mesh;
 import net.kallen.solaris.graphics.mesh.Shapes;
 import net.kallen.solaris.graphics.render.Renderer;

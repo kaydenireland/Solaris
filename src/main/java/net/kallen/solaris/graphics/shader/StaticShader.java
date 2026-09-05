@@ -1,11 +1,9 @@
 package net.kallen.solaris.graphics.shader;
 
-import net.kallen.solaris.graphics.Light;
+import net.kallen.solaris.graphics.scene.Light;
 import net.kallen.solaris.math.vector.Matrix4;
 
 public class StaticShader extends Shader {
-
-    float ambientStrength = 0.2f;
 
     public StaticShader(String vPath, String fPath) {
         super(vPath, fPath);
@@ -34,7 +32,7 @@ public class StaticShader extends Shader {
         setUniform("tex", textureUnit);
     }
 
-    public void loadLight(Light light) {
+    public void loadLight(Light light, float ambientStrength) {
         super.setUniform("lightPosition", light.getPosition());
         super.setUniform("lightColor", light.getColor());
         super.setUniform("ambientStrength", ambientStrength);

@@ -1,4 +1,4 @@
-package net.kallen.solaris.graphics;
+package net.kallen.solaris.graphics.scene;
 
 import net.kallen.solaris.math.vector.Vector3;
 
