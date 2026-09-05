@@ -38,4 +38,9 @@ public class StaticShader extends Shader {
         super.setUniform("ambientStrength", ambientStrength);
     }
 
+    public void loadShine(float damper, float reflectivity) {
+        super.setUniform("shine", damper);
+        super.setUniform("reflectivity", reflectivity);
+    }
+
 }

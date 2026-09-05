@@ -2,6 +2,7 @@ package net.kallen.solaris.graphics.render;
 
 import net.kallen.solaris.graphics.camera.Camera;
 import net.kallen.solaris.graphics.mesh.Mesh;
+import net.kallen.solaris.graphics.mesh.Texture;
 import net.kallen.solaris.graphics.scene.Entity;
 import net.kallen.solaris.graphics.scene.Light;
 import net.kallen.solaris.graphics.scene.Scene;
@@ -67,8 +68,11 @@ public class Renderer {
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, mesh.getIBO());
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mesh.getTexture().getTextureID());
+
+        Texture texture = mesh.getTexture();
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
         shader.loadTexture(0);
+        shader.loadShine(texture.getShineDamper(), texture.getReflectivity());
 
         // Draw
         GL11.glDrawElements(
