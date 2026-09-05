@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Matrix4 {
 
     public static final int SIZE = 4;
-    private float[] elements = new float[SIZE * SIZE];
+    private final float[] elements = new float[SIZE * SIZE];
 
     public static Matrix4 identity() {
 
@@ -63,9 +63,9 @@ public class Matrix4 {
         Matrix4 result;
 
         Matrix4 translationMatrix = Matrix4.translate(position);
-        Matrix4 rotXMatrix = Matrix4.rotate(rotation.x, new Vector3(1, 0, 0));
-        Matrix4 rotYMatrix = Matrix4.rotate(rotation.y, new Vector3(0, 1, 0));
-        Matrix4 rotZMatrix = Matrix4.rotate(rotation.z, new Vector3(0, 0, 1));
+        Matrix4 rotXMatrix = Matrix4.rotate(rotation.x, Vector3.UNIT_X);
+        Matrix4 rotYMatrix = Matrix4.rotate(rotation.y, Vector3.UNIT_Y);
+        Matrix4 rotZMatrix = Matrix4.rotate(rotation.z, Vector3.UNIT_Z);
         Matrix4 scaleMatrix = Matrix4.scale(scale);
 
         Matrix4 rotationMatrix = Matrix4.multiply(rotYMatrix, Matrix4.multiply(rotXMatrix, rotZMatrix));
@@ -111,11 +111,11 @@ public class Matrix4 {
         Matrix4 result;
 
         Matrix4 translationMatrix = Matrix4.translate(position.negate());
-        Matrix4 rotXMatrix = Matrix4.rotate(rotation.x, new Vector3(1, 0, 0));
-        Matrix4 rotYMatrix = Matrix4.rotate(rotation.y, new Vector3(0, 1, 0));
-        Matrix4 rotZMatrix = Matrix4.rotate(rotation.z, new Vector3(0, 0, 1));
+        Matrix4 rotXMatrix = Matrix4.rotate(rotation.x, Vector3.UNIT_X);
+        Matrix4 rotYMatrix = Matrix4.rotate(rotation.y, Vector3.UNIT_Y);
+        Matrix4 rotZMatrix = Matrix4.rotate(rotation.z, Vector3.UNIT_Z);
 
-        Matrix4 rotationMatrix = Matrix4.multiply(rotZMatrix, Matrix4.multiply(rotYMatrix, rotXMatrix));
+        Matrix4 rotationMatrix = Matrix4.multiply(rotZMatrix, Matrix4.multiply(rotXMatrix, rotYMatrix));
 
         result = Matrix4.multiply(rotationMatrix, translationMatrix);
 

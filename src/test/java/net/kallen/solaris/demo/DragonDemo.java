@@ -27,7 +27,7 @@ public class DragonDemo {
         Renderer renderer = new Renderer(window, shader, camera);
 
         Light light = new Light(
-                new Vector3(0, 0, -5),
+                new Vector3(0, 0, -8),
                 new Vector3(1, 1, 1)
         );
 
@@ -35,7 +35,7 @@ public class DragonDemo {
                 ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.MODELS, "dragon").toSystemFilePath(".obj")
         );
         Entity dragon = new Entity(
-                new Vector3(0, 0, -10),
+                new Vector3(0, 0, -12),
                 new Vector3(0, 0, 0),
                 new Vector3(1, 1, 1),
                 mesh
@@ -57,6 +57,7 @@ public class DragonDemo {
             @Override
             public void update() {
                 camera.update();
+                // dragon.increaseRotation(new Vector3(0f, 0.1f, 0f));
             }
 
             @Override
