@@ -14,7 +14,7 @@ public class Mesh {
 
     private Vertex[] vertices;
     private int[] indices;
-    private int vao, vbo, ibo, tbo;
+    private int vao, vbo, ibo, tbo, nbo;
     private Texture texture;
 
     public Mesh(Vertex[] vertices, int[] indices) {
@@ -31,6 +31,7 @@ public class Mesh {
 
     public void create() {
 
+        // Vertices
         vao = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vao);
 
@@ -45,6 +46,7 @@ public class Mesh {
         vbo = storeData(positionBuffer, 0, 3);
         MemoryUtil.memFree(positionBuffer);
 
+        // Textures
         FloatBuffer textureBuffer = MemoryUtil.memAllocFloat(vertices.length * 2);
         float[] textureData = new float[vertices.length * 2];
         for (int i = 0; i < vertices.length; i++) {
@@ -52,9 +54,24 @@ public class Mesh {
             textureData[i * 2 + 1] = vertices[i].getTexturePos().y;
         }
         textureBuffer.put(textureData).flip();
-        tbo = storeData(textureBuffer, 2, 2);
+        tbo = storeData(textureBuffer, 1, 2);
         MemoryUtil.memFree(textureBuffer);
 
+        // Normals
+        FloatBuffer normalBuffer = MemoryUtil.memAllocFloat(vertices.length * 3);
+        float[] normalData = new float[vertices.length * 3];
+
+        for (int i = 0; i < vertices.length; i++) {
+            normalData[i * 3] = vertices[i].getNormal().x;
+            normalData[i * 3 + 1] = vertices[i].getNormal().y;
+            normalData[i * 3 + 2] = vertices[i].getNormal().z;
+        }
+
+        normalBuffer.put(normalData).flip();
+        nbo = storeData(normalBuffer, 2, 3);
+        MemoryUtil.memFree(normalBuffer);
+
+        // Indices
         IntBuffer indicesBuffer = MemoryUtil.memAllocInt(indices.length);
         indicesBuffer.put(indices).flip();
 
@@ -62,6 +79,7 @@ public class Mesh {
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
         MemoryUtil.memFree(indicesBuffer);
+
 
         GL30.glBindVertexArray(0); // Unbind VAO
 
@@ -82,6 +100,7 @@ public class Mesh {
         GL15.glDeleteBuffers(vbo);
         GL15.glDeleteBuffers(ibo);
         GL15.glDeleteBuffers(tbo);
+        GL15.glDeleteBuffers(nbo);
 
         GL30.glDeleteVertexArrays(vao);
         texture.destroy();
@@ -110,6 +129,10 @@ public class Mesh {
 
     public int getIBO() {
         return ibo;
+    }
+
+    public int getNBO() {
+        return nbo;
     }
 
     public Texture getTexture() {

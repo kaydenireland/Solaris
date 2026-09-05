@@ -48,10 +48,6 @@ public class Renderer {
     public void renderMesh(Mesh mesh, Vector3 position) {
         GL30.glBindVertexArray(mesh.getVAO());
 
-        GL30.glEnableVertexAttribArray(0);
-        GL30.glEnableVertexAttribArray(1);
-        GL30.glEnableVertexAttribArray(2);
-
         // Object uniform
         staticShader.loadModelMatrix(Matrix4.translate(position));
         staticShader.loadViewMatrix(Matrix4.view(camera.getPosition(), camera.getRotation()));
@@ -73,9 +69,6 @@ public class Renderer {
 
         // Unbind
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        GL30.glDisableVertexAttribArray(0);
-        GL30.glDisableVertexAttribArray(1);
-        GL30.glDisableVertexAttribArray(2);
         GL30.glBindVertexArray(0);
     }
 

@@ -5,6 +5,8 @@ import net.kallen.solaris.math.vector.Matrix4;
 
 public class StaticShader extends Shader {
 
+    float ambientStrength = 0.2f;
+
     public StaticShader(String vPath, String fPath) {
         super(vPath, fPath);
     }
@@ -35,6 +37,7 @@ public class StaticShader extends Shader {
     public void loadLight(Light light) {
         super.setUniform("lightPosition", light.getPosition());
         super.setUniform("lightColor", light.getColor());
+        super.setUniform("ambientStrength", ambientStrength);
     }
 
 }

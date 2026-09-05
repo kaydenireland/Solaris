@@ -2,6 +2,7 @@ package net.kallen.solaris.demo;
 
 import net.kallen.solaris.camera.Camera;
 import net.kallen.solaris.camera.FreeCamera;
+import net.kallen.solaris.graphics.Light;
 import net.kallen.solaris.graphics.mesh.Mesh;
 import net.kallen.solaris.graphics.render.Renderer;
 import net.kallen.solaris.graphics.shader.StaticShader;
@@ -26,6 +27,10 @@ public class DragonDemo {
         Mesh mesh = ModelLoader.loadModel(
                 ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.MODELS, "dragon").toSystemFilePath(".obj")
         );
+        Light light = new Light(
+                new Vector3(0, 0, -5),
+                new Vector3(1, 1, 1)
+        );
 
         new GameLoop(window){
 
@@ -44,6 +49,8 @@ public class DragonDemo {
             @Override
             public void render() {
                 renderer.beginFrame();
+
+                shader.loadLight(light);
                 renderer.renderMesh(mesh, new Vector3(0, 0, -10));
                 renderer.endFrame();
             }
