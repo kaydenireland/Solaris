@@ -1,4 +1,4 @@
-package net.kallen.solaris.graphics;
+package net.kallen.solaris.graphics.mesh;
 
 import net.kallen.solaris.math.vector.Vector2;
 import net.kallen.solaris.math.vector.Vector3;
@@ -31,6 +31,7 @@ public final class Shapes {
         // Center
         vertices[0] = new Vertex(
                 new Vector3(0, 0, 0),
+                new Vector3(0, 0, 1),
                 new Vector2(0.5f, 0.5f)
         );
 
@@ -46,6 +47,7 @@ public final class Shapes {
 
             vertices[i + 1] = new Vertex(
                     new Vector3(x, y, 0),
+                    new Vector3(0, 0, 1),
                     new Vector2(u, v)
             );
         }
@@ -103,8 +105,12 @@ public final class Shapes {
 
                 int index = ring * (segments + 1) + segment;
 
+                Vector3 position = new Vector3(x, y, z);
+                Vector3 normal = position.normalize();
+
                 vertices[index] = new Vertex(
-                        new Vector3(x, y, z),
+                        position,
+                        normal,
                         new Vector2(u, v)
                 );
             }
@@ -137,6 +143,10 @@ public final class Shapes {
      *
      * The total height extends from -height/2 to +height/2.
      *
+     * The bottom/top rings are each duplicated into a separate set of
+     * "side" vertices carrying the outward radial normal the wall needs,
+     * distinct from the flat up/down normal used by the caps.
+     *
      * @param radius   radius of the cylinder
      * @param height   total height
      * @param segments number of segments around the circumference
@@ -149,26 +159,16 @@ public final class Shapes {
             );
         }
 
-        /*
-         * We create:
-         *
-         *   bottom center
-         *   bottom ring
-         *   top center
-         *   top ring
-         *
-         * The duplicated rings make the UV mapping straightforward.
-         */
-
         int ringSize = segments + 1;
 
         int bottomCenter = 0;
-        int bottomRing = 1;
+        int bottomCapRing = bottomCenter + 1;
+        int topCenter = bottomCapRing + ringSize;
+        int topCapRing = topCenter + 1;
+        int bottomSideRing = topCapRing + ringSize;
+        int topSideRing = bottomSideRing + ringSize;
 
-        int topCenter = bottomRing + ringSize;
-        int topRing = topCenter + 1;
-
-        int vertexCount = topRing + ringSize;
+        int vertexCount = topSideRing + ringSize;
 
         Vertex[] vertices = new Vertex[vertexCount];
 
@@ -181,11 +181,12 @@ public final class Shapes {
 
         vertices[bottomCenter] = new Vertex(
                 new Vector3(0, bottomY, 0),
+                new Vector3(0, -1, 0),
                 new Vector2(0.5f, 0.5f)
         );
 
         // --------------------------------------------------------
-        // Bottom ring
+        // Bottom cap ring (flat-down normal, for the bottom cap only)
         // --------------------------------------------------------
 
         for (int i = 0; i <= segments; i++) {
@@ -198,8 +199,9 @@ public final class Shapes {
             float u = 0.5f + x / (2.0f * radius);
             float v = 0.5f + z / (2.0f * radius);
 
-            vertices[bottomRing + i] = new Vertex(
+            vertices[bottomCapRing + i] = new Vertex(
                     new Vector3(x, bottomY, z),
+                    new Vector3(0, -1, 0),
                     new Vector2(u, v)
             );
         }
@@ -210,11 +212,12 @@ public final class Shapes {
 
         vertices[topCenter] = new Vertex(
                 new Vector3(0, topY, 0),
+                new Vector3(0, 1, 0),
                 new Vector2(0.5f, 0.5f)
         );
 
         // --------------------------------------------------------
-        // Top ring
+        // Top cap ring (flat-up normal, for the top cap only)
         // --------------------------------------------------------
 
         for (int i = 0; i <= segments; i++) {
@@ -227,8 +230,53 @@ public final class Shapes {
             float u = 0.5f + x / (2.0f * radius);
             float v = 0.5f + z / (2.0f * radius);
 
-            vertices[topRing + i] = new Vertex(
+            vertices[topCapRing + i] = new Vertex(
                     new Vector3(x, topY, z),
+                    new Vector3(0, 1, 0),
+                    new Vector2(u, v)
+            );
+        }
+
+        // --------------------------------------------------------
+        // Bottom side ring — same position as the bottom cap ring,
+        // but with the outward radial normal the wall actually needs.
+        // --------------------------------------------------------
+
+        for (int i = 0; i <= segments; i++) {
+
+            double angle = 2.0 * Math.PI * i / segments;
+
+            float x = radius * (float) Math.cos(angle);
+            float z = radius * (float) Math.sin(angle);
+
+            float u = 0.5f + x / (2.0f * radius);
+            float v = 0.5f + z / (2.0f * radius);
+
+            vertices[bottomSideRing + i] = new Vertex(
+                    new Vector3(x, bottomY, z),
+                    new Vector3((float) Math.cos(angle), 0, (float) Math.sin(angle)),
+                    new Vector2(u, v)
+            );
+        }
+
+        // --------------------------------------------------------
+        // Top side ring — same position as the top cap ring,
+        // but with the outward radial normal the wall actually needs.
+        // --------------------------------------------------------
+
+        for (int i = 0; i <= segments; i++) {
+
+            double angle = 2.0 * Math.PI * i / segments;
+
+            float x = radius * (float) Math.cos(angle);
+            float z = radius * (float) Math.sin(angle);
+
+            float u = 0.5f + x / (2.0f * radius);
+            float v = 0.5f + z / (2.0f * radius);
+
+            vertices[topSideRing + i] = new Vertex(
+                    new Vector3(x, topY, z),
+                    new Vector3((float) Math.cos(angle), 0, (float) Math.sin(angle)),
                     new Vector2(u, v)
             );
         }
@@ -253,8 +301,8 @@ public final class Shapes {
         for (int i = 0; i < segments; i++) {
 
             indices[index++] = bottomCenter;
-            indices[index++] = bottomRing + i + 1;
-            indices[index++] = bottomRing + i;
+            indices[index++] = bottomCapRing + i + 1;
+            indices[index++] = bottomCapRing + i;
         }
 
         // --------------------------------------------------------
@@ -264,21 +312,21 @@ public final class Shapes {
         for (int i = 0; i < segments; i++) {
 
             indices[index++] = topCenter;
-            indices[index++] = topRing + i;
-            indices[index++] = topRing + i + 1;
+            indices[index++] = topCapRing + i;
+            indices[index++] = topCapRing + i + 1;
         }
 
         // --------------------------------------------------------
-        // Sides
+        // Sides (use the side rings, not the cap rings)
         // --------------------------------------------------------
 
         for (int i = 0; i < segments; i++) {
 
-            int bottom = bottomRing + i;
-            int bottomNext = bottomRing + i + 1;
+            int bottom = bottomSideRing + i;
+            int bottomNext = bottomSideRing + i + 1;
 
-            int top = topRing + i;
-            int topNext = topRing + i + 1;
+            int top = topSideRing + i;
+            int topNext = topSideRing + i + 1;
 
             // First triangle
             indices[index++] = bottom;
@@ -298,6 +346,15 @@ public final class Shapes {
      * Creates a cone centered around the origin with its axis along Y.
      *
      * The base is at -height/2 and the tip is at +height/2.
+     *
+     * The base ring and tip are each duplicated into a separate set of
+     * "side" vertices carrying the slanted outward normal the lateral
+     * surface needs, distinct from the flat-down normal used by the
+     * base cap.
+     *
+     * @param radius   radius of the cone
+     * @param height   total height
+     * @param segments number of segments around the circumference
      */
     public static Mesh cone(float radius, float height, int segments) {
 
@@ -310,21 +367,32 @@ public final class Shapes {
         int ringSize = segments + 1;
 
         int center = 0;
-        int ring = 1;
-        int tip = ring + ringSize;
+        int capRing = center + 1;
+        int sideRing = capRing + ringSize;
+        int sideTip = sideRing + ringSize;
 
-        Vertex[] vertices = new Vertex[tip + 1];
+        Vertex[] vertices = new Vertex[sideTip + ringSize];
 
         float baseY = -height / 2.0f;
         float tipY = height / 2.0f;
 
+        // Length of the slant edge, used to normalize the side/tip normal below.
+        float slantLength = (float) Math.sqrt(height * height + radius * radius);
+
+        // --------------------------------------------------------
         // Base center
+        // --------------------------------------------------------
+
         vertices[center] = new Vertex(
                 new Vector3(0, baseY, 0),
+                new Vector3(0, -1, 0),
                 new Vector2(0.5f, 0.5f)
         );
 
-        // Base ring
+        // --------------------------------------------------------
+        // Base cap ring (flat-down normal, for the base cap only)
+        // --------------------------------------------------------
+
         for (int i = 0; i <= segments; i++) {
 
             double angle = 2.0 * Math.PI * i / segments;
@@ -335,17 +403,56 @@ public final class Shapes {
             float u = 0.5f + x / (2.0f * radius);
             float v = 0.5f + z / (2.0f * radius);
 
-            vertices[ring + i] = new Vertex(
+            vertices[capRing + i] = new Vertex(
                     new Vector3(x, baseY, z),
+                    new Vector3(0, -1, 0),
                     new Vector2(u, v)
             );
         }
 
-        // Tip
-        vertices[tip] = new Vertex(
-                new Vector3(0, tipY, 0),
-                new Vector2(0.5f, 1.0f)
-        );
+        // --------------------------------------------------------
+        // Side ring + duplicated tip, carrying the cone's real slanted
+        // normal instead of the cap's flat one and the tip's placeholder.
+        //
+        // The slant edge from a base point to the tip is
+        // (-cosθ·radius, height, -sinθ·radius); crossed with the ring's
+        // tangent direction (-sinθ, 0, cosθ) and normalized, this reduces
+        // to (height·cosθ, radius, height·sinθ) / slantLength — and since
+        // it doesn't depend on radius-at-vertex, the tip copy at the same
+        // θ can reuse the exact same normal as its ring vertex.
+        // --------------------------------------------------------
+
+        for (int i = 0; i <= segments; i++) {
+
+            double angle = 2.0 * Math.PI * i / segments;
+
+            float cosA = (float) Math.cos(angle);
+            float sinA = (float) Math.sin(angle);
+
+            float x = radius * cosA;
+            float z = radius * sinA;
+
+            float u = 0.5f + x / (2.0f * radius);
+            float v = 0.5f + z / (2.0f * radius);
+
+            Vector3 normal = new Vector3(
+                    height * cosA / slantLength,
+                    radius / slantLength,
+                    height * sinA / slantLength
+            );
+
+            vertices[sideRing + i] = new Vertex(
+                    new Vector3(x, baseY, z),
+                    normal,
+                    new Vector2(u, v)
+            );
+
+            vertices[sideTip + i] = new Vertex(
+                    new Vector3(0, tipY, 0),
+                    normal,
+                    new Vector2(0.5f, 1.0f)
+            );
+        }
 
         /*
          * Base:
@@ -359,20 +466,26 @@ public final class Shapes {
 
         int index = 0;
 
+        // --------------------------------------------------------
         // Base
+        // --------------------------------------------------------
+
         for (int i = 0; i < segments; i++) {
 
             indices[index++] = center;
-            indices[index++] = ring + i + 1;
-            indices[index++] = ring + i;
+            indices[index++] = capRing + i + 1;
+            indices[index++] = capRing + i;
         }
 
-        // Sides
+        // --------------------------------------------------------
+        // Sides (own ring + own tip copies, not the cap ring/shared tip)
+        // --------------------------------------------------------
+
         for (int i = 0; i < segments; i++) {
 
-            indices[index++] = ring + i;
-            indices[index++] = ring + i + 1;
-            indices[index++] = tip;
+            indices[index++] = sideRing + i;
+            indices[index++] = sideRing + i + 1;
+            indices[index++] = sideTip + i;
         }
 
         return new Mesh(vertices, indices);
@@ -388,12 +501,7 @@ public final class Shapes {
      * @param segments radial resolution
      * @param rings    number of rings per hemisphere
      */
-    public static Mesh capsule(
-            float radius,
-            float height,
-            int segments,
-            int rings
-    ) {
+    public static Mesh capsule(float radius, float height, int segments, int rings) {
 
         if (segments < 3) {
             throw new IllegalArgumentException(
@@ -413,30 +521,13 @@ public final class Shapes {
             );
         }
 
-        /*
-         * The capsule consists of:
-         *
-         *       hemisphere
-         *       cylinder
-         *       hemisphere
-         *
-         * The cylindrical portion has:
-         *
-         *     cylinderHeight = height - 2 * radius
-         */
-
         float cylinderHeight = height - radius * 2.0f;
 
         int totalRings = rings * 2 + 1;
 
         int ringSize = segments + 1;
 
-        Vertex[] vertices =
-                new Vertex[(totalRings + 1) * ringSize];
-
-        /*
-         * Generate rings from the bottom pole to the top pole.
-         */
+        Vertex[] vertices = new Vertex[(totalRings + 1) * ringSize];
 
         int vertexIndex = 0;
 
@@ -444,59 +535,53 @@ public final class Shapes {
 
             float y;
             float ringRadius;
+            double angle;
 
             if (ring <= rings) {
 
                 // Bottom hemisphere
-                double angle =
-                        -Math.PI / 2.0
-                                + (Math.PI / 2.0) * ring / rings;
+                angle = -Math.PI / 2.0 + (Math.PI / 2.0) * ring / rings;
 
-                ringRadius =
-                        radius * (float) Math.cos(angle);
+                ringRadius = radius * (float) Math.cos(angle);
 
-                y =
-                        -cylinderHeight / 2.0f
-                                + radius * (float) Math.sin(angle);
+                y = -cylinderHeight / 2.0f + radius * (float) Math.sin(angle);
 
             } else {
 
                 // Top hemisphere
                 int topRing = ring - rings;
 
-                double angle =
-                        (Math.PI / 2.0) * topRing / rings;
+                angle = (Math.PI / 2.0) * topRing / rings;
 
-                ringRadius =
-                        radius * (float) Math.cos(angle);
+                ringRadius = radius * (float) Math.cos(angle);
 
-                y =
-                        cylinderHeight / 2.0f
-                                + radius * (float) Math.sin(angle);
+                y = cylinderHeight / 2.0f + radius * (float) Math.sin(angle);
             }
 
-            for (int segment = 0;
-                 segment <= segments;
-                 segment++) {
+            // The point on each hemisphere ring lies on a sphere of radius
+            // `radius` centered on that hemisphere's pole, at the same
+            // (angle, theta) used to place the point itself — so the outward
+            // normal is just (cos(angle)*cosTheta, sin(angle), cos(angle)*sinTheta).
+            float cosAngle = (float) Math.cos(angle);
+            float sinAngle = (float) Math.sin(angle);
 
-                double theta =
-                        2.0 * Math.PI * segment / segments;
+            for (int segment = 0; segment <= segments; segment++) {
 
-                float x =
-                        ringRadius * (float) Math.cos(theta);
+                double theta = 2.0 * Math.PI * segment / segments;
+                float cosTheta = (float) Math.cos(theta);
+                float sinTheta = (float) Math.sin(theta);
 
-                float z =
-                        ringRadius * (float) Math.sin(theta);
+                float x = ringRadius * cosTheta;
+                float z = ringRadius * sinTheta;
+                float u = (float) segment / segments;
+                float v = (float) ring / totalRings;
 
-                float u =
-                        (float) segment / segments;
-
-                float v =
-                        (float) ring / totalRings;
+                Vector3 normal = new Vector3(cosAngle * cosTheta, sinAngle, cosAngle * sinTheta);
 
                 vertices[vertexIndex++] =
                         new Vertex(
                                 new Vector3(x, y, z),
+                                normal,
                                 new Vector2(u, v)
                         );
             }
@@ -506,44 +591,22 @@ public final class Shapes {
          * Connect every pair of rings.
          */
 
-        int[] indices =
-                new int[
-                        totalRings
-                                * segments
-                                * 6
-                        ];
-
+        int[] indices = new int[totalRings * segments * 6];
         int index = 0;
 
         for (int ring = 0; ring < totalRings; ring++) {
 
-            int current =
-                    ring * ringSize;
+            int current = ring * ringSize;
+            int next = (ring + 1) * ringSize;
 
-            int next =
-                    (ring + 1) * ringSize;
+            for (int segment = 0; segment < segments; segment++) {
 
-            for (int segment = 0;
-                 segment < segments;
-                 segment++) {
-
-                indices[index++] =
-                        current + segment;
-
-                indices[index++] =
-                        next + segment;
-
-                indices[index++] =
-                        current + segment + 1;
-
-                indices[index++] =
-                        current + segment + 1;
-
-                indices[index++] =
-                        next + segment;
-
-                indices[index++] =
-                        next + segment + 1;
+                indices[index++] = current + segment;
+                indices[index++] = next + segment;
+                indices[index++] = current + segment + 1;
+                indices[index++] = current + segment + 1;
+                indices[index++] = next + segment;
+                indices[index++] = next + segment + 1;
             }
         }
 
@@ -559,12 +622,7 @@ public final class Shapes {
      * @param majorSegments resolution around the torus
      * @param minorSegments resolution around the tube
      */
-    public static Mesh torus(
-            float majorRadius,
-            float minorRadius,
-            int majorSegments,
-            int minorSegments
-    ) {
+    public static Mesh torus(float majorRadius, float minorRadius, int majorSegments,int minorSegments) {
 
         if (majorSegments < 3) {
             throw new IllegalArgumentException(
@@ -580,108 +638,56 @@ public final class Shapes {
 
         int ringSize = minorSegments + 1;
 
-        Vertex[] vertices =
-                new Vertex[
-                        (majorSegments + 1) * ringSize
-                        ];
-
+        Vertex[] vertices = new Vertex[(majorSegments + 1) * ringSize];
         int vertexIndex = 0;
+        for (int major = 0; major <= majorSegments; major++) {
+            double theta = 2.0 * Math.PI * major / majorSegments;
+            float cosTheta = (float) Math.cos(theta);
+            float sinTheta = (float) Math.sin(theta);
 
-        for (int major = 0;
-             major <= majorSegments;
-             major++) {
+            for (int minor = 0; minor <= minorSegments; minor++) {
 
-            double theta =
-                    2.0 * Math.PI
-                            * major / majorSegments;
+                double phi = 2.0 * Math.PI * minor / minorSegments;
+                float cosPhi = (float) Math.cos(phi);
+                float sinPhi = (float) Math.sin(phi);
+                float ringRadius = majorRadius + minorRadius * cosPhi;
 
-            float cosTheta =
-                    (float) Math.cos(theta);
+                float x = ringRadius * cosTheta;
+                float y = minorRadius * sinPhi;
+                float z = ringRadius * sinTheta;
 
-            float sinTheta =
-                    (float) Math.sin(theta);
+                float u = (float) major / majorSegments;
+                float v = (float) minor / minorSegments;
 
-            for (int minor = 0;
-                 minor <= minorSegments;
-                 minor++) {
-
-                double phi =
-                        2.0 * Math.PI
-                                * minor / minorSegments;
-
-                float cosPhi =
-                        (float) Math.cos(phi);
-
-                float sinPhi =
-                        (float) Math.sin(phi);
-
-                float ringRadius =
-                        majorRadius
-                                + minorRadius * cosPhi;
-
-                float x =
-                        ringRadius * cosTheta;
-
-                float y =
-                        minorRadius * sinPhi;
-
-                float z =
-                        ringRadius * sinTheta;
-
-                float u =
-                        (float) major / majorSegments;
-
-                float v =
-                        (float) minor / minorSegments;
+                // The tube's cross-section circle at this theta is centered on
+                // (majorRadius*cosTheta, 0, majorRadius*sinTheta); the outward
+                // normal is the direction from that center to this point, which
+                // simplifies to exactly (cosPhi*cosTheta, sinPhi, cosPhi*sinTheta).
+                Vector3 normal = new Vector3(cosPhi * cosTheta, sinPhi, cosPhi * sinTheta);
 
                 vertices[vertexIndex++] =
                         new Vertex(
                                 new Vector3(x, y, z),
+                                normal,
                                 new Vector2(u, v)
                         );
             }
         }
 
-        int[] indices =
-                new int[
-                        majorSegments
-                                * minorSegments
-                                * 6
-                        ];
-
+        int[] indices = new int[majorSegments * minorSegments * 6];
         int index = 0;
+        for (int major = 0; major < majorSegments; major++) {
 
-        for (int major = 0;
-             major < majorSegments;
-             major++) {
+            int current = major * ringSize;
+            int next = (major + 1) * ringSize;
+            for (int minor = 0; minor < minorSegments; minor++) {
 
-            int current =
-                    major * ringSize;
-
-            int next =
-                    (major + 1) * ringSize;
-
-            for (int minor = 0;
-                 minor < minorSegments;
-                 minor++) {
-
-                indices[index++] =
-                        current + minor;
-
-                indices[index++] =
-                        next + minor;
-
-                indices[index++] =
-                        current + minor + 1;
-
-                indices[index++] =
-                        current + minor + 1;
-
-                indices[index++] =
-                        next + minor;
-
-                indices[index++] =
-                        next + minor + 1;
+                indices[index++] = current + minor;
+                indices[index++] = next + minor;
+                indices[index++] = current + minor + 1;
+                indices[index++] = current + minor + 1;
+                indices[index++] = next + minor;
+                indices[index++] = next + minor + 1;
             }
         }
 
@@ -751,6 +757,7 @@ public final class Shapes {
                             pos.y + offset.y,
                             pos.z + offset.z
                     ),
+                    original[i].getNormal(),
                     original[i].getTexturePos()
             );
         }
@@ -786,6 +793,7 @@ public final class Shapes {
                             pos.y * scalar.y,
                             pos.z * scalar.z
                     ),
+                    original[i].getNormal(),
                     original[i].getTexturePos()
             );
         }

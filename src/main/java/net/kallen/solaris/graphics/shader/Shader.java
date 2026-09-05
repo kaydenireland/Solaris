@@ -1,4 +1,4 @@
-package net.kallen.solaris.graphics;
+package net.kallen.solaris.graphics.shader;
 
 import net.kallen.solaris.math.vector.Matrix4;
 import net.kallen.solaris.math.vector.Vector2;
@@ -12,32 +12,33 @@ import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Shader {
+public abstract class Shader {
 
-    private String vertexFile, fragmentFile;
-    private int vertexID, fragmentID, programID;
+    private int programID;
+    private final String vertexFile, fragmentFile;
+    private int vertexID, fragmentID;
+
     private final Map<String, Integer> uniformCache = new HashMap<>();
 
-    public Shader(String vPath, String fPath) {
+    protected Shader(String vPath, String fPath) {
         vertexFile = FileLoader.loadAsString(vPath);
         fragmentFile = FileLoader.loadAsString(fPath);
     }
 
     public void create() {
         programID = GL20.glCreateProgram();
-        vertexID = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
 
+        // Vertex Shader
+        vertexID = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
         GL20.glShaderSource(vertexID, vertexFile);
         GL20.glCompileShader(vertexID);
 
         if (GL20.glGetShaderi(vertexID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-            System.err.println("Vertex Shader: " + GL20.glGetShaderInfoLog(vertexID));
-            return;
+            throw new RuntimeException("Vertex shader compilation Failed: " + GL20.glGetShaderInfoLog(vertexID));
         }
 
-
+        // Fragment Shader
         fragmentID = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
-
         GL20.glShaderSource(fragmentID, fragmentFile);
         GL20.glCompileShader(fragmentID);
 
@@ -49,10 +50,12 @@ public class Shader {
         GL20.glAttachShader(programID, vertexID);
         GL20.glAttachShader(programID, fragmentID);
 
+        bindAttributes();
+
         GL20.glLinkProgram(programID);
         if(GL20.glGetProgrami(programID, GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
-            String log = GL20.glGetShaderInfoLog(vertexID);
-            throw new RuntimeException("Vertex shader compilation failed:\n" + log);
+            String log = GL20.glGetShaderInfoLog(programID);
+            throw new RuntimeException("Shader program linking failed:\n" + log);
         }
 
         GL20.glValidateProgram(programID);
@@ -60,12 +63,16 @@ public class Shader {
             System.err.println("Program Validation: " + GL20.glGetProgramInfoLog(programID));
         }
 
-        vertexFile = null;
-        fragmentFile = null;
-
     }
 
-    public int getUniformLocation(String name) {
+    protected abstract void bindAttributes();
+
+    protected void bindAttribute(int index, String name) {
+        GL20.glBindAttribLocation(programID, index, name);
+    }
+
+
+    protected int getUniformLocation(String name) {
         if (uniformCache.containsKey(name)) {
             return uniformCache.get(name);
         }
@@ -74,27 +81,27 @@ public class Shader {
         return location;
     }
 
-    public void setUniform(String name, float value) {
+    protected void setUniform(String name, float value) {
         GL20.glUniform1f(getUniformLocation(name), value);
     }
 
-    public void setUniform(String name, int value) {
+    protected void setUniform(String name, int value) {
         GL20.glUniform1i(getUniformLocation(name), value);
     }
 
-    public void setUniform(String name, boolean value) {
+    protected void setUniform(String name, boolean value) {
         GL20.glUniform1i(getUniformLocation(name), value ? 1 : 0);
     }
 
-    public void setUniform(String name, Vector2 value) {
+    protected void setUniform(String name, Vector2 value) {
         GL20.glUniform2f(getUniformLocation(name), value.x, value.y);
     }
 
-    public void setUniform(String name, Vector3 value) {
+    protected void setUniform(String name, Vector3 value) {
         GL20.glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
     }
 
-    public void setUniform(String name, Matrix4 value) {
+    protected void setUniform(String name, Matrix4 value) {
         FloatBuffer matrix = MemoryUtil.memAllocFloat(Matrix4.SIZE * Matrix4.SIZE);
         matrix.put(value.getAll()).flip();
         GL20.glUniformMatrix4fv(getUniformLocation(name), true, matrix);

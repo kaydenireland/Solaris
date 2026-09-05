@@ -1,4 +1,4 @@
-package net.kallen.solaris.graphics;
+package net.kallen.solaris.graphics.mesh;
 
 import net.kallen.solaris.util.file.ImageLoader;
 import org.lwjgl.opengl.GL11;
@@ -16,6 +16,9 @@ public class Texture {
     private int textureID;
     private int width, height;
     private boolean mipmaps;
+
+    private float shineDamper = 1;
+    private float reflectivity = 0;
 
     /**
      * Load a texture from the classpath.
@@ -119,4 +122,20 @@ public class Texture {
     public int getTextureID() { return textureID; }
     public int getWidth()     { return width; }
     public int getHeight()    { return height; }
+
+    public float getShineDamper() {
+        return shineDamper;
+    }
+
+    public float getReflectivity() {
+        return reflectivity;
+    }
+
+    public void setShineDamper(float shineDamper) {
+        this.shineDamper = shineDamper;
+    }
+
+    public void setReflectivity(float reflectivity) {
+        this.reflectivity = reflectivity;
+    }
 }

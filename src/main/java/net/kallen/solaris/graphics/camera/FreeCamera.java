@@ -1,4 +1,4 @@
-package net.kallen.solaris.camera;
+package net.kallen.solaris.graphics.camera;
 
 import net.kallen.solaris.io.Input;
 import net.kallen.solaris.io.Key;
@@ -16,6 +16,10 @@ public class FreeCamera extends Camera {
     private boolean invertY = false;
     private boolean mouseEnabled = true;
 
+    public FreeCamera() {
+        super();
+    }
+
     public FreeCamera(Vector3 position, Vector3 rotation) {
         super(position, rotation);
     }
@@ -28,16 +32,11 @@ public class FreeCamera extends Camera {
         }
 
         float speed = moveSpeed * Time.deltaTime();
-        float yaw = (float) Math.toRadians(rotation.y);
 
-        float x = (float) Math.sin(yaw) * speed;
-        float z = (float) Math.cos(yaw) * speed;
-
-
-        if (Input.isKeyDown(Key.W)) position = position.add(new Vector3(x, 0, -z));
-        if (Input.isKeyDown(Key.A)) position = position.add(new Vector3(-z, 0, -x));
-        if (Input.isKeyDown(Key.S)) position = position.add(new Vector3(-x, 0, z));
-        if (Input.isKeyDown(Key.D)) position = position.add(new Vector3(z, 0, x));
+        if (Input.isKeyDown(Key.W)) position = position.add(new Vector3(0, 0, -speed));
+        if (Input.isKeyDown(Key.A)) position = position.add(new Vector3(-speed, 0, 0));
+        if (Input.isKeyDown(Key.S)) position = position.add(new Vector3(0, 0, speed));
+        if (Input.isKeyDown(Key.D)) position = position.add(new Vector3(speed, 0, 0));
 
         if (Input.isKeyDown(Key.SPACE)) position = position.add(new Vector3(0, speed, 0));
         if (Input.isKeyDown(Key.LEFT_SHIFT)) position = position.add(new Vector3(0, -speed, 0));

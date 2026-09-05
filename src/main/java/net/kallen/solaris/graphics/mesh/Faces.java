@@ -1,4 +1,4 @@
-package net.kallen.solaris.graphics;
+package net.kallen.solaris.graphics.mesh;
 
 public final class Faces {
 

@@ -24,4 +24,5 @@ public interface VectorLike<V> {
     V reflect(V normal);
     float angle(V other);
     String toString();
+    // TODO: reflect
 }
