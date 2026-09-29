@@ -12,7 +12,7 @@ public class Scene {
     private List<Entity> entities = new ArrayList<>();
     private Light light;
 
-    float ambientLightStrength = 0.1f;
+    private float ambientLightStrength = 0.1f;
 
     public Scene() {
 
@@ -60,6 +60,7 @@ public class Scene {
         for (Entity entity : entities) {
             renderer.renderEntity(entity);
         }
+
     }
 
     public void setAmbientLightStrength(float strength) {

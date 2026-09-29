@@ -2,6 +2,7 @@ package net.kallen.solaris.graphics.shader;
 
 import net.kallen.solaris.graphics.scene.Light;
 import net.kallen.solaris.math.vector.Matrix4;
+import net.kallen.solaris.math.vector.Vector3;
 
 public class StaticShader extends Shader {
 
@@ -41,6 +42,10 @@ public class StaticShader extends Shader {
     public void loadShine(float damper, float reflectivity) {
         super.setUniform("shine", damper);
         super.setUniform("reflectivity", reflectivity);
+    }
+
+    public void loadFogColor(Vector3 color) {
+        super.setUniform("fogColor", color);
     }
 
 }

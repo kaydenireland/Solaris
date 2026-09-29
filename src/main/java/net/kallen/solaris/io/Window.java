@@ -151,8 +151,8 @@ public class Window {
         return fullscreen;
     }
 
-    public void setBgColor(float r, float g, float b, float a) {
-        GL11.glClearColor(r, g, b, a);
+    protected void setBgColor(float r, float g, float b) {
+        GL11.glClearColor(r, g, b, 1f);
     }
 
     public void updateProjectionMatrix() {

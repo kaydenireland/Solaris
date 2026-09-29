@@ -44,7 +44,7 @@ public class GameLoop implements Runnable {
 
     private void init() {
         window.create();
-        window.setBgColor(0.1f, 0.3f, 0.2f, 0.5f);
+        window.setBgColor(0.4f, 0.7f, 0.9f);
         create();
     }
 

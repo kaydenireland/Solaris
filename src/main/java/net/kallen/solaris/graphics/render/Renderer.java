@@ -20,6 +20,9 @@ public class Renderer {
     private final StaticShader shader;
     private final Camera camera;
 
+    private Vector3 skyColor = new Vector3(0.4f, 0.7f, 0.9f);
+    private Vector3 fogColor = new Vector3(0.4f, 0.7f, 0.9f);
+
     public Renderer(Window window, StaticShader shader, Camera camera) {
         this.window = window;
         this.shader = shader;
@@ -42,6 +45,8 @@ public class Renderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
+        GL11.glClearColor(skyColor.x, skyColor.y, skyColor.z, 1f);
+
         shader.bind();
         shader.loadProjectionMatrix(window.getProjectionMatrix());
     }
@@ -49,6 +54,11 @@ public class Renderer {
     public void endFrame() {
         shader.unbind();
         window.swapBuffers();
+    }
+
+    public void setBgColor(Vector3 color) {
+        this.skyColor = color;
+        this.fogColor = color;
     }
 
     // Render
@@ -59,6 +69,8 @@ public class Renderer {
 
     public void renderMesh(Mesh mesh, Matrix4 model) {
         GL30.glBindVertexArray(mesh.getVAO());
+
+        shader.loadFogColor(fogColor);
 
         // Object uniform
         shader.loadModelMatrix(model);

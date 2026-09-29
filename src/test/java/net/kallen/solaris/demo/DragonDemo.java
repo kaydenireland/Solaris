@@ -44,7 +44,7 @@ public class DragonDemo {
         );
         Scene scene = new Scene(light);
         scene.addEntity(dragon);
-        scene.setAmbientLightStrength(0.9f);
+        scene.setAmbientLightStrength(0.5f);
 
 
         new GameLoop(window){
@@ -59,7 +59,7 @@ public class DragonDemo {
             @Override
             public void update() {
                 camera.update();
-                dragon.increaseRotation(new Vector3(0f, 0.1f, 0f));
+                dragon.increaseRotation(new Vector3(0f, 0.05f, 0f));
             }
 
             @Override
