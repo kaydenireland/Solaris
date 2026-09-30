@@ -1,11 +1,18 @@
 package net.kallen.solaris.io;
 
 import net.kallen.solaris.math.vector.Matrix4;
+import net.kallen.solaris.util.file.ImageLoader;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.stb.STBImage;
+import org.lwjgl.system.MemoryStack;
+
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 public class Window {
 
@@ -128,6 +135,32 @@ public class Window {
         } else {
             GLFW.glfwSetWindowMonitor(window, 0,
                     windowPosX[0], windowPosY[0], width, height, 0);
+        }
+    }
+
+    public void setIcon(String path) {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer width = stack.mallocInt(1);
+            IntBuffer height = stack.mallocInt(1);
+
+            // ImageLoader currently flips vertically.
+            ByteBuffer pixels = ImageLoader.loadTexture(path, width, height);
+
+            if (pixels == null) {
+                return;
+            }
+
+            GLFWImage icon = GLFWImage.malloc(stack)
+                    .width(width.get(0))
+                    .height(height.get(0))
+                    .pixels(pixels);
+
+            GLFWImage.Buffer icons = GLFWImage.malloc(1, stack);
+            icons.put(0, icon);
+
+            GLFW.glfwSetWindowIcon(window, icons);
+
+            STBImage.stbi_image_free(pixels);
         }
     }
 

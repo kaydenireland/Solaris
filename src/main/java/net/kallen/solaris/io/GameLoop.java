@@ -1,5 +1,7 @@
 package net.kallen.solaris.io;
 
+import net.kallen.solaris.util.file.ResourceLocation;
+
 import javax.swing.*;
 
 public class GameLoop implements Runnable {
@@ -45,6 +47,7 @@ public class GameLoop implements Runnable {
     private void init() {
         window.create();
         window.setBgColor(0.4f, 0.7f, 0.9f);
+        window.setIcon(ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.ICONS, "logo").toImagePath());
         create();
     }
 
