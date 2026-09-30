@@ -18,11 +18,9 @@ import java.util.List;
 
 public class EntityRenderer {
 
-    private final Camera camera;
     private final StaticShader shader;
 
-    public EntityRenderer(Camera camera, StaticShader shader) {
-        this.camera = camera;
+    public EntityRenderer(StaticShader shader) {
         this.shader = shader;
     }
 
@@ -34,11 +32,11 @@ public class EntityRenderer {
         shader.destroy();
     }
 
-    public void render(List<Entity> entities, List<Light> lights, Matrix4 projection, Vector3 fogColor, float ambientStrength) {
+    public void render(RenderContext context, List<Entity> entities, List<Light> lights, Vector3 fogColor, float ambientStrength) {
         shader.bind();
 
-        shader.loadProjectionMatrix(projection);
-        shader.loadViewMatrix(Matrix4.view(camera.getPosition(), camera.getRotation()));
+        shader.loadProjectionMatrix(context.getProjectionMatrix());
+        shader.loadViewMatrix(context.getViewMatrix());
         shader.loadFogColor(fogColor);
         shader.loadAmbientLightStrength(ambientStrength);
 

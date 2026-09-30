@@ -19,6 +19,7 @@ public class MasterRenderer {
 
     private final Window window;
     private final Camera camera;
+    private RenderContext context;
 
     private final EntityRenderer entityRenderer;
     private final TerrainRenderer terrainRenderer;
@@ -39,9 +40,14 @@ public class MasterRenderer {
     public MasterRenderer(Window window, Camera camera, StaticShader entityShader, TerrainShader terrainShader) {
         this.window = window;
         this.camera = camera;
+        updateContext();
 
-        this.entityRenderer = new EntityRenderer(camera, entityShader);
-        this.terrainRenderer = new TerrainRenderer(camera, terrainShader);
+        this.entityRenderer = new EntityRenderer(entityShader);
+        this.terrainRenderer = new TerrainRenderer(terrainShader);
+    }
+
+    private void updateContext() {
+        context = new RenderContext(window.getProjectionMatrix(), camera.getPosition(), camera.getRotation());
     }
 
     public void create() {
@@ -72,11 +78,13 @@ public class MasterRenderer {
     }
 
     public void renderEntities(List<Entity> entities) {
-        entityRenderer.render(entities, new ArrayList<>(), window.getProjectionMatrix(), fogColor, ambiemtLightStrength);
+        updateContext();
+        entityRenderer.render(context, entities, new ArrayList<>(), fogColor, ambiemtLightStrength);
     }
 
     public void renderTerrain(List<Terrain> terrains) {
-        terrainRenderer.render(terrains, new ArrayList<>(), window.getProjectionMatrix(), fogColor, ambiemtLightStrength);
+        updateContext();
+        terrainRenderer.render(context, terrains, new ArrayList<>(), fogColor, ambiemtLightStrength);
     }
 
     public void beginTransparentPass() {
@@ -105,8 +113,9 @@ public class MasterRenderer {
     }
 
     public void render(Scene scene) {
-        terrainRenderer.render(scene.getTerrains(), scene.getLights(), window.getProjectionMatrix(), fogColor, ambiemtLightStrength);
-        entityRenderer.render(scene.getEntities(), scene.getLights(), window.getProjectionMatrix(), fogColor, ambiemtLightStrength);
+        updateContext();
+        terrainRenderer.render(context, scene.getTerrains(), scene.getLights(), fogColor, ambiemtLightStrength);
+        entityRenderer.render(context, scene.getEntities(), scene.getLights(), fogColor, ambiemtLightStrength);
     }
 
     public void setAmbientLightStrength(float strength) {

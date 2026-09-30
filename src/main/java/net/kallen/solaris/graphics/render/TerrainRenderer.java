@@ -16,11 +16,9 @@ import org.lwjgl.opengl.GL30;
 import java.util.List;
 
 public class TerrainRenderer {
-    private final Camera camera;
     private final TerrainShader shader;
 
-    public TerrainRenderer(Camera camera, TerrainShader shader) {
-        this.camera = camera;
+    public TerrainRenderer(TerrainShader shader) {
         this.shader = shader;
     }
 
@@ -32,10 +30,10 @@ public class TerrainRenderer {
         shader.destroy();
     }
 
-    public void render(List<Terrain> terrains, List<Light> lights, Matrix4 projection, Vector3 fogColor, float ambientStrength) {
+    public void render(RenderContext context, List<Terrain> terrains, List<Light> lights,  Vector3 fogColor, float ambientStrength) {
         shader.bind();
-        shader.loadProjectionMatrix(projection);
-        shader.loadViewMatrix(Matrix4.view(camera.getPosition(), camera.getRotation()));
+        shader.loadProjectionMatrix(context.getProjectionMatrix());
+        shader.loadViewMatrix(context.getViewMatrix());
 
         shader.loadFogColor(fogColor);
         shader.loadAmbientLightStrength(ambientStrength);
