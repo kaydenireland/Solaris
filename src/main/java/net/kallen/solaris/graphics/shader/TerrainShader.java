@@ -6,15 +6,15 @@ import net.kallen.solaris.math.vector.Vector3;
 
 import java.util.List;
 
-public class StaticShader extends Shader {
+public class TerrainShader extends Shader {
 
     private static final int MAX_LIGHTS = 8;
 
-    public StaticShader() {
-        super("entity");
+    public TerrainShader() {
+        super("terrain");
     }
 
-    public StaticShader(String vPath, String fPath) {
+    public TerrainShader(String vPath, String fPath) {
         super(vPath, fPath);
     }
 

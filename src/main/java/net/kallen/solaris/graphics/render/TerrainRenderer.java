@@ -3,12 +3,11 @@ package net.kallen.solaris.graphics.render;
 import net.kallen.solaris.graphics.camera.Camera;
 import net.kallen.solaris.graphics.mesh.Mesh;
 import net.kallen.solaris.graphics.mesh.Texture;
-import net.kallen.solaris.graphics.scene.Entity;
 import net.kallen.solaris.graphics.scene.Light;
-import net.kallen.solaris.graphics.shader.StaticShader;
-import net.kallen.solaris.io.Window;
+import net.kallen.solaris.graphics.shader.TerrainShader;
 import net.kallen.solaris.math.vector.Matrix4;
 import net.kallen.solaris.math.vector.Vector3;
+import net.kallen.solaris.terrain.Terrain;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
@@ -16,12 +15,11 @@ import org.lwjgl.opengl.GL30;
 
 import java.util.List;
 
-public class EntityRenderer {
-
+public class TerrainRenderer {
     private final Camera camera;
-    private final StaticShader shader;
+    private final TerrainShader shader;
 
-    public EntityRenderer(Camera camera, StaticShader shader) {
+    public TerrainRenderer(Camera camera, TerrainShader shader) {
         this.camera = camera;
         this.shader = shader;
     }
@@ -34,11 +32,11 @@ public class EntityRenderer {
         shader.destroy();
     }
 
-    public void render(List<Entity> entities, List<Light> lights, Matrix4 projection, Vector3 fogColor, float ambientStrength) {
+    public void render(List<Terrain> terrains, List<Light> lights, Matrix4 projection, Vector3 fogColor, float ambientStrength) {
         shader.bind();
-
         shader.loadProjectionMatrix(projection);
         shader.loadViewMatrix(Matrix4.view(camera.getPosition(), camera.getRotation()));
+
         shader.loadFogColor(fogColor);
         shader.loadAmbientLightStrength(ambientStrength);
 
@@ -46,30 +44,19 @@ public class EntityRenderer {
             shader.loadLights(lights);
         }
 
-        for (Entity entity : entities) {
-            renderEntity(entity);
+        for (Terrain t : terrains) {
+            Matrix4 model = Matrix4.transform(
+                    new Vector3(t.getX(), 0, t.getZ()),
+                    Vector3.ZERO,
+                    Vector3.ONE
+            );
+            renderTerrain(t.getMesh(), model);
         }
 
         shader.unbind();
     }
 
-
-    public void renderEntity(Entity entity) {
-
-        Matrix4 model = Matrix4.transform(
-                entity.getPosition(),
-                entity.getRotation(),
-                entity.getScale()
-        );
-
-        renderMesh(entity.getMesh(), model);
-    }
-
-    public void renderMesh(Mesh mesh, Vector3 position) {
-        renderMesh(mesh, Matrix4.translate(position));
-    }
-
-    private void renderMesh(Mesh mesh, Matrix4 model) {
+    private void renderTerrain(Mesh mesh, Matrix4 model) {
         GL30.glBindVertexArray(mesh.getVAO());
 
         Texture texture = mesh.getTexture();
@@ -85,13 +72,5 @@ public class EntityRenderer {
         GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getIndices().length, GL11.GL_UNSIGNED_INT, 0);
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
-    }
-
-    public void loadLights(List<Light> lights) {
-        shader.loadLights(lights);
-    }
-
-    public void setAmbientStrength(float strength) {
-        shader.loadAmbientLightStrength(strength);
     }
 }

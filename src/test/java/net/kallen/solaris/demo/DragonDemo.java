@@ -21,13 +21,9 @@ public class DragonDemo {
 
     public static void main(String[] args) {
         Window window = new Window(1280, 780, "Solaris Test");
-        StaticShader shader = new StaticShader(
-                ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.SHADERS, "entity").toFilePath(".vert"),
-                ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.SHADERS, "entity").toFilePath(".frag")
-        );
         Camera camera = new FreeCamera(new Vector3(0, 4, 0), new Vector3(0,0,0));
 
-        MasterRenderer renderer = new MasterRenderer(window, camera, shader);
+        MasterRenderer renderer = new MasterRenderer(window, camera);
 
         List<Light> lights = new ArrayList<>();
 
@@ -75,9 +71,8 @@ public class DragonDemo {
 
             @Override
             public void create() {
-                shader.create();
+                renderer.create();
                 scene.create();
-                scene.setAmbientLightStrength(renderer,0.0f);
                 window.lockCursor(true);
             }
 
@@ -97,7 +92,7 @@ public class DragonDemo {
             @Override
             public void close() {
                 scene.destroy();
-                shader.destroy();
+                renderer.destroy();
             }
 
         }.start();

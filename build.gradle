@@ -50,6 +50,12 @@ test {
 }
 
 
+tasks.register('runTerrainDemo', JavaExec) {
+    group = 'demo'
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'net.kallen.solaris.demo.TerrainDemo'
+}
+
 tasks.register('runDragonDemo', JavaExec) {
     group = 'demo'
     classpath = sourceSets.test.runtimeClasspath

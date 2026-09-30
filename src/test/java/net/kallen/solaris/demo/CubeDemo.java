@@ -15,13 +15,9 @@ public class CubeDemo {
 
     public static void main(String[] args) {
         Window window = new Window(1280, 780, "Solaris Test");
-        StaticShader shader = new StaticShader(
-                ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.SHADERS, "entity").toFilePath(".vert"),
-                ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.SHADERS, "entity").toFilePath(".frag")
-        );
         Camera camera = new FreeCamera(new Vector3(0, 0, 0), new Vector3(0,0,0));
 
-        MasterRenderer renderer = new MasterRenderer(window, camera, shader);
+        MasterRenderer renderer = new MasterRenderer(window, camera);
 
         Mesh mesh = Shapes.CUBE;
 
@@ -29,7 +25,7 @@ public class CubeDemo {
 
             @Override
             public void create() {
-                shader.create();
+                renderer.create();
                 mesh.create();
                 window.lockCursor(true);
             }
@@ -49,7 +45,7 @@ public class CubeDemo {
             @Override
             public void close() {
                 mesh.destroy();
-                shader.destroy();
+                renderer.destroy();
             }
 
         }.start();

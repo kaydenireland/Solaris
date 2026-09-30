@@ -4,6 +4,7 @@ import net.kallen.solaris.math.vector.Matrix4;
 import net.kallen.solaris.math.vector.Vector2;
 import net.kallen.solaris.math.vector.Vector3;
 import net.kallen.solaris.util.file.FileLoader;
+import net.kallen.solaris.util.file.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryUtil;
@@ -19,6 +20,14 @@ public abstract class Shader {
     private int vertexID, fragmentID;
 
     private final Map<String, Integer> uniformCache = new HashMap<>();
+
+
+    protected Shader(String name) {
+        this(
+                ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.SHADERS, name).toFilePath(".vert"),
+                ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.SHADERS, name).toFilePath(".frag")
+        );
+    }
 
     protected Shader(String vPath, String fPath) {
         vertexFile = FileLoader.loadAsString(vPath);
