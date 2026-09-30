@@ -2,9 +2,9 @@ package net.kallen.solaris.demo;
 
 import net.kallen.solaris.graphics.camera.Camera;
 import net.kallen.solaris.graphics.camera.FreeCamera;
+import net.kallen.solaris.graphics.render.MasterRenderer;
 import net.kallen.solaris.graphics.scene.Light;
 import net.kallen.solaris.graphics.mesh.Mesh;
-import net.kallen.solaris.graphics.render.Renderer;
 import net.kallen.solaris.graphics.scene.Entity;
 import net.kallen.solaris.graphics.scene.Scene;
 import net.kallen.solaris.graphics.shader.StaticShader;
@@ -22,12 +22,12 @@ public class DragonDemo {
     public static void main(String[] args) {
         Window window = new Window(1280, 780, "Solaris Test");
         StaticShader shader = new StaticShader(
-                ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.SHADERS, "default").toFilePath(".vert"),
-                ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.SHADERS, "default").toFilePath(".frag")
+                ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.SHADERS, "entity").toFilePath(".vert"),
+                ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.SHADERS, "entity").toFilePath(".frag")
         );
         Camera camera = new FreeCamera(new Vector3(0, 4, 0), new Vector3(0,0,0));
 
-        Renderer renderer = new Renderer(window, shader, camera);
+        MasterRenderer renderer = new MasterRenderer(window, camera, shader);
 
         List<Light> lights = new ArrayList<>();
 
@@ -90,9 +90,7 @@ public class DragonDemo {
             @Override
             public void render() {
                 renderer.beginFrame();
-
-                scene.render(renderer);
-
+                renderer.render(scene);
                 renderer.endFrame();
             }
 

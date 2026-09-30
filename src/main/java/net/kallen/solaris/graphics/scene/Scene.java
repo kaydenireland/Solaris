@@ -1,7 +1,7 @@
 package net.kallen.solaris.graphics.scene;
 
 import net.kallen.solaris.graphics.mesh.Mesh;
-import net.kallen.solaris.graphics.render.Renderer;
+import net.kallen.solaris.graphics.render.MasterRenderer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -32,6 +32,10 @@ public class Scene {
         return entities;
     }
 
+    public List<Light> getLights() {
+        return lights;
+    }
+
     public void create() {
         Set<Mesh> createdMeshes = new LinkedHashSet<>();
         for (Entity entity : entities) {
@@ -50,28 +54,7 @@ public class Scene {
         }
     }
 
-    public void render(Renderer renderer) {
-        if (!lights.isEmpty()) {
-            renderer.loadLights(lights);
-        }
-
-        for (Entity entity : entities) {
-            if (!entity.getMesh().getTexture().hasTransparency()) {
-                renderer.renderEntity(entity);
-            }
-        }
-
-        renderer.beginTransparentPass();
-        for (Entity entity : entities) {
-            if (entity.getMesh().getTexture().hasTransparency()) {
-                renderer.renderEntity(entity);
-            }
-        }
-        renderer.endTransparentPass();
-
-    }
-
-    public void setAmbientLightStrength(Renderer renderer, float strength) {
+    public void setAmbientLightStrength(MasterRenderer renderer, float strength) {
         renderer.setAmbientStrength(strength);
     }
 
