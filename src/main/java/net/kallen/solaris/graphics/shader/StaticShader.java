@@ -4,7 +4,11 @@ import net.kallen.solaris.graphics.scene.Light;
 import net.kallen.solaris.math.vector.Matrix4;
 import net.kallen.solaris.math.vector.Vector3;
 
+import java.util.List;
+
 public class StaticShader extends Shader {
+
+    private static final int MAX_LIGHTS = 8;
 
     public StaticShader(String vPath, String fPath) {
         super(vPath, fPath);
@@ -33,9 +37,16 @@ public class StaticShader extends Shader {
         setUniform("tex", textureUnit);
     }
 
-    public void loadLight(Light light, float ambientStrength) {
-        super.setUniform("lightPosition", light.getPosition());
-        super.setUniform("lightColor", light.getColor());
+    public void loadLights(List<Light> lights, float ambientStrength) {
+        for(int i = 0; i < MAX_LIGHTS; i++) {
+            if (i < lights.size()) {
+                super.setUniform("lightPosition[" + i + "]", lights.get(i).getPosition());
+                super.setUniform("lightColor[" + i + "]", lights.get(i).getColor());
+            } else {
+                super.setUniform("lightPosition[" + i + "]", new Vector3(0f, 0f, 0f));
+                super.setUniform("lightColor[" + i + "]", new Vector3(0f, 0f, 0f));
+            }
+        }
         super.setUniform("ambientStrength", ambientStrength);
     }
 

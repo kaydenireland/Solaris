@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class Scene {
     private List<Entity> entities = new ArrayList<>();
-    private Light light;
+    private List<Light> lights = new ArrayList<>();
 
     private float ambientLightStrength = 0.1f;
 
@@ -18,8 +18,8 @@ public class Scene {
 
     }
 
-    public Scene(Light light) {
-        this.light = light;
+    public Scene(List<Light> lights) {
+        this.lights = lights;
     }
 
     public void addEntity(Entity entity) {
@@ -53,8 +53,8 @@ public class Scene {
     }
 
     public void render(Renderer renderer) {
-        if (light != null) {
-            renderer.loadLight(light, ambientLightStrength);
+        if (!lights.isEmpty()) {
+            renderer.loadLights(lights, ambientLightStrength);
         }
 
         for (Entity entity : entities) {

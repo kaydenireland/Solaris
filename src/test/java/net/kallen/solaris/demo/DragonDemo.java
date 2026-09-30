@@ -14,6 +14,9 @@ import net.kallen.solaris.math.vector.Vector3;
 import net.kallen.solaris.util.file.ModelLoader;
 import net.kallen.solaris.util.file.ResourceLocation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DragonDemo {
 
     public static void main(String[] args) {
@@ -26,10 +29,17 @@ public class DragonDemo {
 
         Renderer renderer = new Renderer(window, shader, camera);
 
-        Light light = new Light(
-                new Vector3(0, 5, -8),
+        List<Light> lights = new ArrayList<>();
+
+        lights.add(new Light(
+                new Vector3(20, 5, 0),
                 new Vector3(0.75f, 0.25f, 0.75f)
-        );
+        ));
+
+        lights.add(new Light(
+                new Vector3(-20, 5, 0),
+                new Vector3(0.25f, 0.75f, 0.25f)
+        ));
 
         Mesh mesh = ModelLoader.loadModel(
                 ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.MODELS, "dragon").toSystemFilePath(".obj")
@@ -42,7 +52,7 @@ public class DragonDemo {
                 new Vector3(1, 1, 1),
                 mesh
         );
-        Scene scene = new Scene(light);
+        Scene scene = new Scene(lights);
         scene.addEntity(dragon);
         scene.setAmbientLightStrength(0.5f);
 

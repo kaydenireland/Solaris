@@ -5,7 +5,6 @@ import net.kallen.solaris.graphics.mesh.Mesh;
 import net.kallen.solaris.graphics.mesh.Texture;
 import net.kallen.solaris.graphics.scene.Entity;
 import net.kallen.solaris.graphics.scene.Light;
-import net.kallen.solaris.graphics.scene.Scene;
 import net.kallen.solaris.graphics.shader.StaticShader;
 import net.kallen.solaris.io.Window;
 import net.kallen.solaris.math.vector.Matrix4;
@@ -14,6 +13,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
+
+import java.util.List;
 
 public class Renderer {
     private final Window window;
@@ -116,8 +117,8 @@ public class Renderer {
 
     // Shader Settings
 
-    public void loadLight(Light light, float ambientStrength) {
-        shader.loadLight(light, ambientStrength);
+    public void loadLights(List<Light> lights, float ambientStrength) {
+        shader.loadLights(lights, ambientStrength);
     }
 
 }
