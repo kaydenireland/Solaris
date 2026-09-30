@@ -37,17 +37,26 @@ public class StaticShader extends Shader {
         setUniform("tex", textureUnit);
     }
 
-    public void loadLights(List<Light> lights, float ambientStrength) {
+    public void loadUseFakeLighting(boolean use) {
+        setUniform("useFakeLighting", use);
+    }
+
+    public void loadLights(List<Light> lights) {
         for(int i = 0; i < MAX_LIGHTS; i++) {
             if (i < lights.size()) {
                 super.setUniform("lightPosition[" + i + "]", lights.get(i).getPosition());
                 super.setUniform("lightColor[" + i + "]", lights.get(i).getColor());
+                super.setUniform("attenuation[" + i + "]", lights.get(i).getAttenuation());
             } else {
-                super.setUniform("lightPosition[" + i + "]", new Vector3(0f, 0f, 0f));
-                super.setUniform("lightColor[" + i + "]", new Vector3(0f, 0f, 0f));
+                super.setUniform("lightPosition[" + i + "]", Vector3.ZERO);
+                super.setUniform("lightColor[" + i + "]", Vector3.ZERO);
+                super.setUniform("attenuation[" + i + "]", Vector3.UNIT_X);
             }
         }
-        super.setUniform("ambientStrength", ambientStrength);
+    }
+
+    public void loadAmbientLightStrength(float strength) {
+        super.setUniform("ambientStrength", strength);
     }
 
     public void loadShine(float damper, float reflectivity) {

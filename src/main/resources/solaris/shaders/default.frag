@@ -10,6 +10,7 @@ out vec4 fragColor;
 
 uniform sampler2D tex;
 uniform vec3 lightColor[8];
+uniform vec3 attenuation[8];
 uniform float ambientStrength;
 
 uniform float shine;
@@ -24,6 +25,9 @@ void main() {
     vec3 totalSpecular = vec3(0.0);
 
     for(int i = 0; i < 8; i++) {
+        float distance = length(toLightVector[i]);
+        float attenuationFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
+
         vec3 unitLightVector = normalize(toLightVector[i]);
         float nDot1 = dot(unitNormal, unitLightVector);
         float brightness = max(nDot1, 0.0);
@@ -33,14 +37,20 @@ void main() {
         specularFactor = max(specularFactor, 0.0);
         float dampedFactor = pow(specularFactor, shine);
 
-        totalDiffuse = totalDiffuse + brightness * lightColor[i];
-        totalSpecular = totalSpecular + dampedFactor * reflectivity * lightColor[i];
+        totalDiffuse += (brightness * lightColor[i]) / attenuationFactor;
+        totalSpecular += (dampedFactor * reflectivity * lightColor[i]) / attenuationFactor;
     }
     totalDiffuse = max(totalDiffuse, ambientStrength);
 
+    vec4 textureColor = texture(tex, passTextureCoordinates);
+
+    if (textureColor.a < 0.1) {
+        discard;
+    }
 
     vec3 lighting = totalDiffuse + totalSpecular;
+    vec3 color = lighting * textureColor.rgb;
+    color = mix(fogColor, color, visibility);
 
-    fragColor = vec4(lighting, 1.0) * texture(tex, passTextureCoordinates);
-    fragColor = mix(vec4(fogColor, 1.0), fragColor, visibility);
+    fragColor = vec4(color, textureColor.a);
 }

@@ -39,9 +39,8 @@ public class Renderer {
         GL11.glDepthFunc(GL11.GL_LESS);
         GL11.glDepthMask(true);
 
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glCullFace(GL11.GL_BACK);
-        GL11.glFrontFace(GL11.GL_CCW);
+        // enableCulling();
+        disableCulling();
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -62,6 +61,24 @@ public class Renderer {
         this.fogColor = color;
     }
 
+    private void enableCulling() {
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glCullFace(GL11.GL_BACK);
+        GL11.glFrontFace(GL11.GL_CCW);
+    }
+
+    private void disableCulling() {
+        GL11.glDisable(GL11.GL_CULL_FACE);
+    }
+
+    public void beginTransparentPass() {
+        GL11.glDepthMask(false);
+    }
+
+    public void endTransparentPass() {
+        GL11.glDepthMask(true);
+    }
+
     // Render
 
     public void renderMesh(Mesh mesh, Vector3 position) {
@@ -72,6 +89,7 @@ public class Renderer {
         GL30.glBindVertexArray(mesh.getVAO());
 
         shader.loadFogColor(fogColor);
+        shader.loadUseFakeLighting(mesh.getTexture().shouldUseFakeLighting());
 
         // Object uniform
         shader.loadModelMatrix(model);
@@ -100,15 +118,6 @@ public class Renderer {
         GL30.glBindVertexArray(0);
     }
 
-    public void renderMeshWithTransparency(Mesh mesh, Vector3 position) {
-        GL11.glDepthMask(false);
-        renderMesh(mesh, position);
-        GL11.glDepthMask(true);
-    }
-
-    public void renderMesh(Mesh mesh) {
-        renderMesh(mesh, Vector3.ZERO);
-    }
 
     public void renderEntity(Entity entity) {
         renderMesh(entity.getMesh(), Matrix4.transform(entity.getPosition(), entity.getRotation(), entity.getScale()));
@@ -117,8 +126,12 @@ public class Renderer {
 
     // Shader Settings
 
-    public void loadLights(List<Light> lights, float ambientStrength) {
-        shader.loadLights(lights, ambientStrength);
+    public void loadLights(List<Light> lights) {
+        shader.loadLights(lights);
+    }
+
+    public void setAmbientStrength(float strength) {
+        shader.loadAmbientLightStrength(strength);
     }
 
 }

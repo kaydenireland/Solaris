@@ -2,6 +2,7 @@ package net.kallen.solaris.demo;
 
 import net.kallen.solaris.graphics.camera.Camera;
 import net.kallen.solaris.graphics.camera.FreeCamera;
+import net.kallen.solaris.graphics.mesh.Shapes;
 import net.kallen.solaris.graphics.scene.Light;
 import net.kallen.solaris.graphics.mesh.Mesh;
 import net.kallen.solaris.graphics.render.Renderer;
@@ -31,14 +32,28 @@ public class DragonDemo {
 
         List<Light> lights = new ArrayList<>();
 
+
+        lights.add(new Light(   // Sun
+                new Vector3(0, 1000, -5000),
+                new Vector3(0.6f, 0.6f, 0.6f)
+        ));
+
         lights.add(new Light(
                 new Vector3(20, 5, 0),
-                new Vector3(0.75f, 0.25f, 0.75f)
+                new Vector3(1.0f, 0.0f, 0.0f),
+                new Vector3(1f, 0.01f, 0.002f)
         ));
 
         lights.add(new Light(
                 new Vector3(-20, 5, 0),
-                new Vector3(0.25f, 0.75f, 0.25f)
+                new Vector3(0.0f, 0.0f, 1.0f),
+                new Vector3(1f, 0.01f, 0.002f)
+        ));
+
+        lights.add(new Light(
+                new Vector3(0, 4, -32),
+                new Vector3(0.0f, 1.0f, 0.0f),
+                new Vector3(1f, 0.01f, 0.002f)
         ));
 
         Mesh mesh = ModelLoader.loadModel(
@@ -47,14 +62,14 @@ public class DragonDemo {
         mesh.getTexture().setShineDamper(8);
         mesh.getTexture().setReflectivity(3);
         Entity dragon = new Entity(
-                new Vector3(0, 0, -12),
-                new Vector3(0, 0, 0),
-                new Vector3(1, 1, 1),
+                new Vector3(0f, 0f, -12f),
+                Vector3.ZERO,
+                Vector3.ONE,
                 mesh
         );
+
         Scene scene = new Scene(lights);
         scene.addEntity(dragon);
-        scene.setAmbientLightStrength(0.5f);
 
 
         new GameLoop(window){
@@ -63,6 +78,7 @@ public class DragonDemo {
             public void create() {
                 shader.create();
                 scene.create();
+                scene.setAmbientLightStrength(renderer,0.0f);
                 window.lockCursor(true);
             }
 

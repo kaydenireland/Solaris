@@ -14,6 +14,7 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 uniform vec3 lightPosition[8];
+uniform float useFakeLighting;
 
 const float density = 0.007;
 const float gradient = 1.5;
@@ -25,7 +26,12 @@ void main() {
     gl_Position = projection * positionRelativeToCamera;
     passTextureCoordinates = textureCoordinates;
 
-    surfaceNormal = (model * vec4(normal, 0.0)).xyz;
+    vec3 actualNormal = normal;
+    if (useFakeLighting > 0.5) {
+        actualNormal = vec3(0.0, 1.0, 0.0);
+    }
+
+    surfaceNormal = (model * vec4(actualNormal, 0.0)).xyz;
     for(int i = 0; i < 8; i++) {
         toLightVector[i]  = lightPosition[i] - worldPosition.xyz;
     }

@@ -19,6 +19,8 @@ public class Texture {
 
     private float shineDamper = 1;
     private float reflectivity = 0;
+    private boolean hasTransparency = false;
+    private boolean useFakeLighting = false;
 
     /**
      * Load a texture from the classpath.
@@ -137,5 +139,21 @@ public class Texture {
 
     public void setReflectivity(float reflectivity) {
         this.reflectivity = reflectivity;
+    }
+
+    public boolean hasTransparency() {
+        return hasTransparency;
+    }
+
+    public void setTransparency(boolean trasparent) {
+        this.hasTransparency = trasparent;
+    }
+
+    public boolean shouldUseFakeLighting() {
+        return useFakeLighting;
+    }
+
+    public void setUseFakeLighting(boolean use) {
+        this.useFakeLighting = use;
     }
 }

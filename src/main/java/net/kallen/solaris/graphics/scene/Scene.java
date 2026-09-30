@@ -12,8 +12,6 @@ public class Scene {
     private List<Entity> entities = new ArrayList<>();
     private List<Light> lights = new ArrayList<>();
 
-    private float ambientLightStrength = 0.1f;
-
     public Scene() {
 
     }
@@ -54,17 +52,27 @@ public class Scene {
 
     public void render(Renderer renderer) {
         if (!lights.isEmpty()) {
-            renderer.loadLights(lights, ambientLightStrength);
+            renderer.loadLights(lights);
         }
 
         for (Entity entity : entities) {
-            renderer.renderEntity(entity);
+            if (!entity.getMesh().getTexture().hasTransparency()) {
+                renderer.renderEntity(entity);
+            }
         }
+
+        renderer.beginTransparentPass();
+        for (Entity entity : entities) {
+            if (entity.getMesh().getTexture().hasTransparency()) {
+                renderer.renderEntity(entity);
+            }
+        }
+        renderer.endTransparentPass();
 
     }
 
-    public void setAmbientLightStrength(float strength) {
-        this.ambientLightStrength = strength;
+    public void setAmbientLightStrength(Renderer renderer, float strength) {
+        renderer.setAmbientStrength(strength);
     }
 
 }
