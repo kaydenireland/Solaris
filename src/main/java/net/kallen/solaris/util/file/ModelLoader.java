@@ -5,7 +5,14 @@ import net.kallen.solaris.graphics.mesh.Texture;
 import net.kallen.solaris.graphics.mesh.Vertex;
 import net.kallen.solaris.math.vector.Vector2;
 import net.kallen.solaris.math.vector.Vector3;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.assimp.*;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+
+import java.nio.FloatBuffer;
 
 /**
  *  Returns a Mesh from a custom model file
@@ -59,5 +66,33 @@ public class ModelLoader {
 
     public static Mesh loadModel(String modelPath) {
         return loadModel(modelPath, ResourceLocation.DEFAULT_TEXTURE);
+    }
+
+    public static int createVAO() {
+        int vaoID = GL30.glGenVertexArrays();
+        GL30.glBindVertexArray(vaoID);
+        return vaoID;
+    }
+
+    public static int storeData(FloatBuffer buffer, int index, int size) {
+        int bufferID = GL15.glGenBuffers();
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, bufferID);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+
+        GL20.glVertexAttribPointer(
+                index,
+                size,
+                GL11.GL_FLOAT,
+                false,
+                0,
+                0
+        );
+
+        GL20.glEnableVertexAttribArray(index);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+
+        return bufferID;
     }
 }

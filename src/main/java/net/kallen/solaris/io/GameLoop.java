@@ -46,7 +46,7 @@ public class GameLoop implements Runnable {
 
     private void init() {
         window.create();
-        window.setBgColor(0.4f, 0.7f, 0.9f);
+        window.setBgColor(0.54f, 0.62f, 0.69f);
         window.setIcon(ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.ICONS, "logo").toImagePath());
         create();
     }

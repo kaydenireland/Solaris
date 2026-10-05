@@ -7,7 +7,6 @@ import net.kallen.solaris.graphics.scene.Light;
 import net.kallen.solaris.graphics.mesh.Mesh;
 import net.kallen.solaris.graphics.scene.Entity;
 import net.kallen.solaris.graphics.scene.Scene;
-import net.kallen.solaris.graphics.shader.StaticShader;
 import net.kallen.solaris.io.GameLoop;
 import net.kallen.solaris.io.Window;
 import net.kallen.solaris.math.vector.Vector3;

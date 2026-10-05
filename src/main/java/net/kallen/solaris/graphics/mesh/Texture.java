@@ -1,5 +1,6 @@
 package net.kallen.solaris.graphics.mesh;
 
+import net.kallen.solaris.util.file.ImageData;
 import net.kallen.solaris.util.file.ImageLoader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -51,19 +52,15 @@ public class Texture {
     public void create() {
         if (path == null) return; // pre-built texture, nothing to load
 
-        IntBuffer widthBuf  = MemoryUtil.memAllocInt(1);
-        IntBuffer heightBuf = MemoryUtil.memAllocInt(1);
 
-        ByteBuffer image = ImageLoader.loadTexture(path, widthBuf, heightBuf);
+        ImageData image = ImageLoader.loadTexture(path, true);
         if (image == null) {
-            MemoryUtil.memFree(widthBuf);
-            MemoryUtil.memFree(heightBuf);
             throw new RuntimeException("Texture failed to load: " + path);
         }
 
         try {
-            width  = widthBuf.get(0);
-            height = heightBuf.get(0);
+            width  = image.width();
+            height = image.height();
 
             // Generate and bind texture
             textureID = GL11.glGenTextures();
@@ -98,7 +95,7 @@ public class Texture {
             GL11.glTexImage2D(
                     GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA,
                     width, height, 0,
-                    GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, image
+                    GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, image.buffer()
             );
 
             if (mipmaps) {
@@ -108,9 +105,7 @@ public class Texture {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
         } finally {
-            STBImage.stbi_image_free(image);
-            MemoryUtil.memFree(widthBuf);
-            MemoryUtil.memFree(heightBuf);
+            STBImage.stbi_image_free(image.buffer());
         }
     }
 

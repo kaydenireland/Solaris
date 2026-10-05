@@ -1,5 +1,8 @@
 package net.kallen.solaris.util.file;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryUtil;
 
@@ -9,16 +12,7 @@ import java.nio.IntBuffer;
 
 public class ImageLoader {
 
-    /**
-     * Loads an image from the classpath and returns the decoded pixel data.
-     * The caller is responsible for freeing the returned ByteBuffer via STBImage.stbi_image_free().
-     *
-     * @param path     classpath path to the image (e.g. "/textures/grass.png")
-     * @param width    single-element buffer that receives the image width
-     * @param height   single-element buffer that receives the image height
-     * @return decoded RGBA pixel data, or null on failure
-     */
-    public static ByteBuffer loadTexture(String path, IntBuffer width, IntBuffer height) {
+    public static ImageData loadTexture(String path, boolean flipVertically) {
         // Read raw bytes from classpath
         byte[] imageData;
         try (InputStream is = ImageLoader.class.getResourceAsStream(path)) {
@@ -38,9 +32,11 @@ public class ImageLoader {
         try {
             rawBuffer.put(imageData).flip();
 
+            IntBuffer width = MemoryUtil.memAllocInt(1);
+            IntBuffer height = MemoryUtil.memAllocInt(1);
             IntBuffer channels = MemoryUtil.memAllocInt(1);
             try {
-                STBImage.stbi_set_flip_vertically_on_load(true);
+                STBImage.stbi_set_flip_vertically_on_load(flipVertically);
                 ByteBuffer image = STBImage.stbi_load_from_memory(rawBuffer, width, height, channels, 4);
 
                 if (image == null) {
@@ -49,7 +45,7 @@ public class ImageLoader {
                     return null;
                 }
 
-                return image; // caller must call stbi_image_free()
+                return new ImageData(image, width.get(0), height.get(0)); // caller must call stbi_image_free()
             } finally {
                 MemoryUtil.memFree(channels);
             }
@@ -58,28 +54,30 @@ public class ImageLoader {
         }
     }
 
-    /**
-     * Loads a square texture and warns if dimensions don't match the expected size.
-     * Useful for sprite sheets and texture atlases.
-     *
-     * @param path         classpath path to the image
-     * @param expectedSize expected width and height in pixels
-     * @param width        single-element buffer that receives the actual width
-     * @param height       single-element buffer that receives the actual height
-     * @return decoded RGBA pixel data, or null on failure
-     */
-    public static ByteBuffer loadTexture(String path, int expectedSize,
-                                         IntBuffer width, IntBuffer height) {
-        ByteBuffer image = loadTexture(path, width, height);
-        if (image != null) {
-            int w = width.get(0);
-            int h = height.get(0);
-            if (w != expectedSize || h != expectedSize) {
-                System.err.println("ImageLoader: Warning — " + path
-                        + " is " + w + "x" + h
-                        + ", expected " + expectedSize + "x" + expectedSize);
-            }
+
+    public static int loadCubeMap(String[] textureLocations) {
+        int texID = GL11.glGenTextures();
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texID);
+
+        for (int i = 0; i < textureLocations.length; i++) {
+            ImageData image = ImageLoader.loadTexture(textureLocations[i], false);
+            GL11.glTexImage2D(
+                    GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL11.GL_RGBA,
+                    image.width(), image.height(),
+                    0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE,
+                    image.buffer()
+            );
+            STBImage.stbi_image_free(image.buffer());
         }
-        return image;
+        GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+
+        GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+        GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
+        GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL12.GL_TEXTURE_WRAP_R, GL12.GL_CLAMP_TO_EDGE);
+
+
+        return texID;
     }
 }

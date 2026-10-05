@@ -7,7 +7,7 @@ import net.kallen.solaris.math.vector.Vector3;
 
 public class FreeCamera extends Camera {
 
-    private float moveSpeed = 5;
+    private float moveSpeed = 50;
 
     // Mouse Settings
     private float maxPitch = 89f;

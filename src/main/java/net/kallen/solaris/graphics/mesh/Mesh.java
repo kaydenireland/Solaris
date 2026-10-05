@@ -1,6 +1,7 @@
 package net.kallen.solaris.graphics.mesh;
 
 import net.kallen.solaris.util.file.ResourceLocation;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -86,7 +87,7 @@ public class Mesh {
         texture.create();
     }
 
-    private int storeData(FloatBuffer buffer, int index, int size) {
+    public int storeData(FloatBuffer buffer, int index, int size) {
         int bufferID = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, bufferID);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
@@ -114,14 +115,19 @@ public class Mesh {
         return indices;
     }
 
-    public int getVAO() {
-        return vao;
+    private int createVAO() {
+        int vaoID = GL30.glGenVertexArrays();
+        GL30.glBindVertexArray(vaoID);
+        return vaoID;
     }
 
     public int getVBO() {
         return vbo;
     }
 
+    public int getVAO() {
+        return vao;
+    }
 
     public int getTBO() {
         return tbo;

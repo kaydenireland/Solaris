@@ -4,6 +4,7 @@ import net.kallen.solaris.graphics.camera.Camera;
 import net.kallen.solaris.graphics.scene.Entity;
 import net.kallen.solaris.graphics.scene.Light;
 import net.kallen.solaris.graphics.scene.Scene;
+import net.kallen.solaris.graphics.shader.SkyboxShader;
 import net.kallen.solaris.graphics.shader.StaticShader;
 import net.kallen.solaris.graphics.shader.TerrainShader;
 import net.kallen.solaris.io.Window;
@@ -23,6 +24,7 @@ public class MasterRenderer {
 
     private final EntityRenderer entityRenderer;
     private final TerrainRenderer terrainRenderer;
+    private final SkyboxRenderer skyboxRenderer;
 
     private Vector3 skyColor = new Vector3(0.4f, 0.7f, 0.9f);
     private Vector3 fogColor = new Vector3(0.4f, 0.7f, 0.9f);
@@ -33,17 +35,19 @@ public class MasterRenderer {
                 window,
                 camera,
                 new StaticShader(),
-                new TerrainShader()
+                new TerrainShader(),
+                new SkyboxShader()
         );
     }
 
-    public MasterRenderer(Window window, Camera camera, StaticShader entityShader, TerrainShader terrainShader) {
+    public MasterRenderer(Window window, Camera camera, StaticShader entityShader, TerrainShader terrainShader, SkyboxShader skyboxShader) {
         this.window = window;
         this.camera = camera;
         updateContext();
 
         this.entityRenderer = new EntityRenderer(entityShader);
         this.terrainRenderer = new TerrainRenderer(terrainShader);
+        this.skyboxRenderer = new SkyboxRenderer(skyboxShader);
     }
 
     private void updateContext() {
@@ -53,11 +57,13 @@ public class MasterRenderer {
     public void create() {
         entityRenderer.create();
         terrainRenderer.create();
+        skyboxRenderer.create();
     }
 
     public void destroy() {
         entityRenderer.destroy();
         terrainRenderer.destroy();
+        skyboxRenderer.destroy();
     }
 
     public void beginFrame() {
@@ -87,6 +93,11 @@ public class MasterRenderer {
         terrainRenderer.render(context, terrains, new ArrayList<>(), fogColor, ambiemtLightStrength);
     }
 
+    public void renderSkybox() {
+        updateContext();
+        skyboxRenderer.render(context);
+    }
+
     public void beginTransparentPass() {
         GL11.glDepthMask(false);
     }
@@ -104,16 +115,13 @@ public class MasterRenderer {
         this.fogColor = color;
     }
 
-    public void setAmbientStrength(float strength) {
-        entityRenderer.setAmbientStrength(strength);
-    }
-
     public EntityRenderer getEntityRenderer() {
         return entityRenderer;
     }
 
     public void render(Scene scene) {
         updateContext();
+        skyboxRenderer.render(context);
         terrainRenderer.render(context, scene.getTerrains(), scene.getLights(), fogColor, ambiemtLightStrength);
         entityRenderer.render(context, scene.getEntities(), scene.getLights(), fogColor, ambiemtLightStrength);
     }

@@ -7,6 +7,16 @@ public class Matrix4 {
     public static final int SIZE = 4;
     private final float[] elements = new float[SIZE * SIZE];
 
+    public static Matrix4 copy(Matrix4 original) {
+        Matrix4 copy = new Matrix4();
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                copy.set(i, j, original.get(i, j));
+            }
+        }
+        return copy;
+    }
+
     public static Matrix4 identity() {
 
         Matrix4 result = new Matrix4();

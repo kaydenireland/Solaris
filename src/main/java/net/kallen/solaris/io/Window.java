@@ -1,6 +1,7 @@
 package net.kallen.solaris.io;
 
 import net.kallen.solaris.math.vector.Matrix4;
+import net.kallen.solaris.util.file.ImageData;
 import net.kallen.solaris.util.file.ImageLoader;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWImage;
@@ -140,27 +141,24 @@ public class Window {
 
     public void setIcon(String path) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            IntBuffer width = stack.mallocInt(1);
-            IntBuffer height = stack.mallocInt(1);
 
-            // ImageLoader currently flips vertically.
-            ByteBuffer pixels = ImageLoader.loadTexture(path, width, height);
+            ImageData data = ImageLoader.loadTexture(path, false);
 
-            if (pixels == null) {
+            if (data == null) {
                 return;
             }
 
             GLFWImage icon = GLFWImage.malloc(stack)
-                    .width(width.get(0))
-                    .height(height.get(0))
-                    .pixels(pixels);
+                    .width(data.width())
+                    .height(data.height())
+                    .pixels(data.buffer());
 
             GLFWImage.Buffer icons = GLFWImage.malloc(1, stack);
             icons.put(0, icon);
 
             GLFW.glfwSetWindowIcon(window, icons);
 
-            STBImage.stbi_image_free(pixels);
+            STBImage.stbi_image_free(data.buffer());
         }
     }
 

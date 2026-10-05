@@ -101,7 +101,6 @@ public class TerrainDemo {
                 renderer.create();
                 scene.create();
                 window.lockCursor(true);
-                renderer.setAmbientStrength(1f);
             }
 
             @Override
