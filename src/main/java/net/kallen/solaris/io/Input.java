@@ -36,7 +36,9 @@ public final class Input {
 
         mouseButtons = new GLFWMouseButtonCallback() {
             public void invoke(long window, int button, int action, int mods) {
-                buttons[button] = (action != GLFW.GLFW_RELEASE);
+                if (button >= 0 && button < buttons.length) {
+                    buttons[button] = (action != GLFW.GLFW_RELEASE);
+                }
             }
         };
 
@@ -55,10 +57,13 @@ public final class Input {
         scrollX = 0;
         scrollY = 0;
 
-        mouseDeltaX = currentMouseX - lastMouseX;
-        mouseDeltaY = currentMouseY - lastMouseY;
         lastMouseX = currentMouseX;
         lastMouseY = currentMouseY;
+    }
+
+    public static void updateDeltas() {
+        mouseDeltaX = currentMouseX - lastMouseX;
+        mouseDeltaY = currentMouseY - lastMouseY;
     }
 
     // Keys

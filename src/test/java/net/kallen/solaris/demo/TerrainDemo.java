@@ -10,11 +10,14 @@ import net.kallen.solaris.graphics.scene.Scene;
 import net.kallen.solaris.graphics.shader.StaticShader;
 import net.kallen.solaris.graphics.shader.TerrainShader;
 import net.kallen.solaris.io.GameLoop;
+import net.kallen.solaris.io.Input;
+import net.kallen.solaris.io.Key;
 import net.kallen.solaris.io.Window;
 import net.kallen.solaris.math.vector.Vector3;
 import net.kallen.solaris.terrain.Terrain;
 import net.kallen.solaris.util.file.ModelLoader;
 import net.kallen.solaris.util.file.ResourceLocation;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +56,18 @@ public class TerrainDemo {
                 mesh
         );
 
+        Mesh mesh2 = ModelLoader.loadModel(
+                ResourceLocation.fromNamespaceAndDirectory("solaris", ResourceLocation.MODELS, "dragon").toSystemFilePath(".obj")
+        );
+        mesh2.getTexture().setShineDamper(8);
+        mesh2.getTexture().setReflectivity(3);
+        Entity dragon = new Entity(
+                new Vector3(0f, 0f, -12f),
+                Vector3.ZERO,
+                Vector3.ONE,
+                mesh2
+        );
+
         Light light = new Light(
                 Vector3.ZERO,
                 new Vector3(0.7f, 0.7f, 0.0f),
@@ -75,6 +90,14 @@ public class TerrainDemo {
         scene.addTerrain(terrain);
         scene.addTerrain(terrain2);
 
+        Scene scene2 = new Scene();
+        scene2.addEntity(dragon);
+        scene2.addLight(light);
+        scene2.addTerrain(terrain);
+        scene2.addTerrain(terrain2);
+
+        final int[] sceneIndex = {0};
+
 
         for (int i = 0; i < 800; i++) {
             Mesh treeMesh = ModelLoader.loadModel(
@@ -93,31 +116,39 @@ public class TerrainDemo {
             scene.addEntity(tree);
         }
 
-
         new GameLoop(window){
 
             @Override
             public void create() {
                 renderer.create();
                 scene.create();
+                scene2.create();
                 window.lockCursor(true);
             }
 
             @Override
             public void update() {
+                if (Input.isKeyPressed(Key.X)) {
+                    sceneIndex[0] = (sceneIndex[0] + 1) % 2;
+                }
+                if (sceneIndex[0] == 1) {
+                    dragon.increaseRotation(new Vector3(0f, 0.1f, 0f));
+                }
                 camera.update();
             }
 
             @Override
             public void render() {
                 renderer.beginFrame();
-                renderer.render(scene);
+                if (sceneIndex[0] == 0) renderer.render(scene);
+                else renderer.render(scene2);
                 renderer.endFrame();
             }
 
             @Override
             public void close() {
                 scene.destroy();
+                scene2.destroy();
                 renderer.destroy();
             }
 

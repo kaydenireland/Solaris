@@ -34,8 +34,9 @@ public class GameLoop implements Runnable {
             lastTime = currentTime;
             Time.update(dt);
 
+            Input.update();
             window.update();
-
+            Input.updateDeltas();
             update();
             render();
 
