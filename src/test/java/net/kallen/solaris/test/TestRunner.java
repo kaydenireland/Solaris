@@ -14,7 +14,8 @@ import net.kallen.solaris.test.data.*;
         AABB2Test.class,
         AABB3Test.class,
         QuadTreeTest.class,
-        OctreeTest.class
+        OctreeTest.class,
+        RingBufferTest.class
 })
 public class TestRunner {
 }
